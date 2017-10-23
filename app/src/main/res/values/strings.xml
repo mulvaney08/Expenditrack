@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Expenditrack</string>
+    <string name="hw">Hello World</string>
 </resources>
