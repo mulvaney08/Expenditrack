@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "126159236900",
+    "firebase_url": "https://expenditrack-184010.firebaseio.com",
+    "project_id": "expenditrack-184010",
+    "storage_bucket": "expenditrack-184010.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126159236900:android:04d6b5dc7669b2f0",
+        "android_client_info": {
+          "package_name": "com.expenditrack.expenditrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126159236900-la6hj8rsn0pkoko1g28b1b6klnodbbtm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.expenditrack.expenditrack",
+            "certificate_hash": "4d0f7fe519424f849ee72282c3ffec627e17f2d1"
+          }
+        },
+        {
+          "client_id": "126159236900-u9j392bd57rh1fqskd5ppj89nii0bs3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA526OGaeqpaM0yIHtImKRRuSDzr_N0eDA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126159236900-u9j392bd57rh1fqskd5ppj89nii0bs3o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

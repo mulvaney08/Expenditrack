@@ -39,7 +39,9 @@ import com.google.api.services.vision.v1.model.Image;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,8 +49,16 @@ import java.util.Locale;
  * Created by Aaron on 23/10/2017.
  */
 public class Demo25Oct extends AppCompatActivity {
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyCvZLvtORxyzf6u-HPsCSKtcViHcJ_T4Xw";
-    public static final String FILE_NAME = "temp.jpg";
+
+    private Uri file;
+    public String filePath = "";
+
+
+    String timeStamp = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss").format(new Date());
+    public String FILE_NAME = "IMG_" + timeStamp + ".jpg";
+
+    private static final String CLOUD_VISION_API_KEY = "AIzaSyA526OGaeqpaM0yIHtImKRRuSDzr_N0eDA";
+
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
 
@@ -168,7 +178,7 @@ public class Demo25Oct extends AppCompatActivity {
 
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
-                Toast.makeText(this, "Error with image" , Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Error with image", Toast.LENGTH_LONG).show();
             }
         } else {
             Log.d(TAG, "Image picker gave us a null image.");
