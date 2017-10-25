@@ -2,6 +2,10 @@ package com.expenditrack.expenditrack;
 
 /**
  * Created by Aaron on 23/10/2017.
+ *
+ * Reference to project developed by Fung LAM
+ * Fung LAM, Cloud-Vision, (), Github repository, https://github.com/GoogleCloudPlatform/cloud-vision.git
+ *
  */
 
 import android.app.Activity;

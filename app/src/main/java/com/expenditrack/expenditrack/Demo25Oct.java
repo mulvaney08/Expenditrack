@@ -49,9 +49,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 /**
  * Created by Aaron on 23/10/2017.
+ *
+ * Reference to project developed by Fung LAM
+ * Fung LAM, Cloud-Vision, (), Github repository, https://github.com/GoogleCloudPlatform/cloud-vision.git
+ *
  */
 public class Demo25Oct extends AppCompatActivity {
 
