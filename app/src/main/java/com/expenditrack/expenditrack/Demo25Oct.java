@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -35,6 +37,9 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -53,9 +58,13 @@ public class Demo25Oct extends AppCompatActivity {
     private Uri file;
     public String filePath = "";
 
-
     String timeStamp = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss").format(new Date());
     public String FILE_NAME = "IMG_" + timeStamp + ".jpg";
+
+    private File currentImage;
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference().child("Aaron/Receipts/"+FILE_NAME);
 
     private static final String CLOUD_VISION_API_KEY = "AIzaSyA526OGaeqpaM0yIHtImKRRuSDzr_N0eDA";
 
@@ -70,6 +79,23 @@ public class Demo25Oct extends AppCompatActivity {
 
     private TextView mImageDetails;
     private ImageView mMainImage;
+
+    public void uploadToFBase(File image){
+        Uri file = Uri.fromFile(image);
+        UploadTask uploadTask = storageRef.putFile(file);
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +152,7 @@ public class Demo25Oct extends AppCompatActivity {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
+            currentImage = getCameraFile();
         }
     }
 
@@ -174,6 +201,7 @@ public class Demo25Oct extends AppCompatActivity {
                                 1200);
 
                 callCloudVision(bitmap);
+                uploadToFBase(currentImage);
                 mMainImage.setImageBitmap(bitmap);
 
             } catch (IOException e) {
