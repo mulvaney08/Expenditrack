@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 /**
  * Created by Aaron on 23/10/2017.
  *
@@ -328,18 +329,38 @@ public class Main extends AppCompatActivity {
     }
 
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
-        String message = "This is what we found:\n\n";
 
+        String message = "";
+        String supplier = "";
+        String apiResponse = "\n\nThis is what we found:\n\n";
+        String cashAmount = "";
+
+        message += "Shop Name: ";
         List<EntityAnnotation> text = response.getResponses().get(0).getTextAnnotations();
         if (text != null) {
             for (EntityAnnotation words : text) {
-                message += String.format(Locale.ENGLISH, words.getDescription());
-                message += "\n";
+                apiResponse += String.format(Locale.ENGLISH, words.getDescription());
+                apiResponse += "\n";
+                if(words.getDescription().contains("POWERCITY") ){
+
+                    supplier = "POWERCITY";
+                }
+                if(words.getDescription().contains("Cash") || words.getDescription().contains("CASH")){
+                      //cashAmount = words.getDescription().substring(words.getDescription().indexOf("CASH")+5 , words.getDescription().indexOf("CASH")+8);
+//                    int startIndex = words.getDescription().indexOf(".") - 1;
+//                    int endIndex = words.getDescription().indexOf("." + 2);
+//                    cashAmount = words.getDescription().substring(startIndex,endIndex);
+//                    message += "\nCash: " + cashAmount;
+
+                }
+
             }
         } else {
-            message += "nothing";
+
+            message += "not found";
+            //message += "nothing";
         }
 
-        return message;
+        return message + supplier +apiResponse;
     }
 }
