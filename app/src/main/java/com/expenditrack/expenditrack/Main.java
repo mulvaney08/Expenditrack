@@ -56,7 +56,7 @@ import java.util.Locale;
  * Fung LAM, Cloud-Vision, (), Github repository, https://github.com/GoogleCloudPlatform/cloud-vision.git
  *
  */
-public class Demo25Oct extends AppCompatActivity {
+public class Main extends AppCompatActivity {
 
     private Uri file;
     public String filePath = "";
@@ -74,7 +74,7 @@ public class Demo25Oct extends AppCompatActivity {
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
 
-    private static final String TAG = Demo25Oct.class.getSimpleName();
+    private static final String TAG = Main.class.getSimpleName();
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     private static final int GALLERY_IMAGE_REQUEST = 1;
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
@@ -111,7 +111,7 @@ public class Demo25Oct extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Demo25Oct.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
                 builder
                         .setMessage("Select an image")
                         .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {

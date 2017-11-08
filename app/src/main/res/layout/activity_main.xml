@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.expenditrack.expenditrack.Demo25Oct"
+    tools:context="com.expenditrack.expenditrack.Main"
     >
 
     <android.support.design.widget.AppBarLayout

@@ -16,7 +16,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.expenditrack.expenditrack.Demo25Oct"
+    tools:context="com.expenditrack.expenditrack.Main"
     tools:showIn="@layout/activity_main">
 
     <ScrollView
