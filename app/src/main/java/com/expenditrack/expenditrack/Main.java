@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.*;
 
 /**
  * Created by Aaron on 23/10/2017.
@@ -333,34 +334,96 @@ public class Main extends AppCompatActivity {
         String message = "";
         String supplier = "";
         String apiResponse = "\n\nThis is what we found:\n\n";
-        String cashAmount = "";
+        String totalAmount = "";
+        String cardAmount = "";
 
-        message += "Shop Name: ";
+        int indexStartOfCard = 0;
+        int indexEndOfCard;
+        int indexOfTansaction;
+
+        String tempString;
+        String totalPrefix = "TRANSACTION";
+
         List<EntityAnnotation> text = response.getResponses().get(0).getTextAnnotations();
         if (text != null) {
+            //Check if response is null
             for (EntityAnnotation words : text) {
+                //Loop through words in response
                 apiResponse += String.format(Locale.ENGLISH, words.getDescription());
                 apiResponse += "\n";
-                if(words.getDescription().contains("POWERCITY") ){
-
+                //Start Powercity example, testing on Powercity receipt -----------------------------------------------------------------------------------------------------------------
+                if (words.getDescription().contains("POWERCITY")) {
+                    //If the receipt contains POWERCITY then set the shop name to be POWERCITY
                     supplier = "POWERCITY";
-                }
-                if(words.getDescription().contains("Cash") || words.getDescription().contains("CASH")){
-                      //cashAmount = words.getDescription().substring(words.getDescription().indexOf("CASH")+5 , words.getDescription().indexOf("CASH")+8);
-//                    int startIndex = words.getDescription().indexOf(".") - 1;
-//                    int endIndex = words.getDescription().indexOf("." + 2);
-//                    cashAmount = words.getDescription().substring(startIndex,endIndex);
-//                    message += "\nCash: " + cashAmount;
 
+                    //Handling different variations of how the api extracts the line containing Card
+                    //Variation 1 card captured with colon afterwards Card:
+                    if (words.getDescription().contains("Card:")) {
+                        //If the payment type card was found
+                        tempString = words.getDescription();
+                        String card = "Card:";
+                        //Getting the index at the start of the sequence Card:
+                        indexStartOfCard = words.getDescription().indexOf(card);
+                        //Getting the index at the end of the sequence Card:
+                        indexEndOfCard = indexStartOfCard+5;
+                        //storing the expected double after Card: expected to be 6 characters long including the decimal to separate euros and cents
+                        tempString  = words.getDescription().substring(indexEndOfCard, indexEndOfCard+6);
+                        //Call method to check if the string value in tempString can be parsed to double to ensure the storage of random strings does not occur.
+                        if (checkIfDouble(tempString)) {
+                            cardAmount = tempString;
+                        }
+                    }
+                    //Variation 2 card captured with space afterwards Card
+                    else if(words.getDescription().contains("Card ")){
+                        //If the payment type card was found
+                        tempString = words.getDescription();
+                        String card = "Card ";
+                        //Getting the index at the start of the sequence Card with space
+                        indexStartOfCard = words.getDescription().indexOf(card);
+                        //Getting the index at the end of the sequence Card with space
+                        indexEndOfCard = indexStartOfCard+5;
+                        //storing the expected double after Card with space expected to be 6 characters long including the decimal to separate euros and cents
+                        tempString  = words.getDescription().substring(indexEndOfCard, indexEndOfCard+7);
+                        //Call method to check if the string value in tempString can be parsed to double to ensure the storage of random strings does not occur.
+                        if (checkIfDouble(tempString)) {
+                            cardAmount = tempString;
+                        }
+                    }
+                    //Variation 3 card captured without colon or space afterwards just the number needed to capture total spent on card
+                    else if(!words.getDescription().contains("Card ") && !words.getDescription().contains("Card:") && words.getDescription().contains("Card")){
+                        //If the payment type card was found
+                        tempString = words.getDescription();
+                        String card = "Card";
+                        //Getting the index at the start of the sequence Card without space
+                        indexStartOfCard = words.getDescription().indexOf(card);
+                        //Getting the index at the end of the sequence Card without space
+                        indexEndOfCard = indexStartOfCard+4;
+                        //storing the expected double after Card without space expected to be 6 characters long including the decimal to separate euros and cents
+                        tempString  = words.getDescription().substring(indexEndOfCard, indexEndOfCard+6);
+                        //Call method to check if the string value in tempString can be parsed to double to ensure the storage of random strings does not occur.
+                        if (checkIfDouble(tempString)) {
+                            cardAmount = tempString;
+                        }
+                    }
                 }
+                //End Powercity example, testing on Powercity receipt ---------------------------------------------------------------------------------------------------------------------
 
             }
         } else {
 
-            message += "not found";
-            //message += "nothing";
+            message += "nothing";
         }
 
-        return message + supplier +apiResponse;
+        message += "Shop Name: " + supplier + "\nTotal spent on card: " +cardAmount;
+        return message +apiResponse;
+    }
+
+    boolean checkIfDouble(String stringIn){
+        try{
+            Double.parseDouble(stringIn);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
