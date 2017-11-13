@@ -71,6 +71,16 @@ public class Main extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference().child("Aaron/Receipts/"+FILE_NAME);
 
+    String message = "";
+    String supplier = "";
+    //String apiResponse = "\n\nThis is what we found:\n\n";
+    String totalAmount = "";
+    String cardAmount = "";
+
+    int indexStartOfCard = 0;
+    int indexEndOfCard;
+    int indexOfTansaction;
+
     private static final String CLOUD_VISION_API_KEY = "AIzaSyA526OGaeqpaM0yIHtImKRRuSDzr_N0eDA";
 
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -294,6 +304,8 @@ public class Main extends AppCompatActivity {
                     BatchAnnotateImagesResponse response = annotateRequest.execute();
                     return convertResponseToString(response);
 
+                    
+
                 } catch (GoogleJsonResponseException e) {
                     Log.d(TAG, "failed to make API request because " + e.getContent());
                 } catch (IOException e) {
@@ -331,15 +343,7 @@ public class Main extends AppCompatActivity {
 
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
 
-        String message = "";
-        String supplier = "";
-        String apiResponse = "\n\nThis is what we found:\n\n";
-        String totalAmount = "";
-        String cardAmount = "";
 
-        int indexStartOfCard = 0;
-        int indexEndOfCard;
-        int indexOfTansaction;
 
         String tempString;
         String totalPrefix = "TRANSACTION";
@@ -349,8 +353,8 @@ public class Main extends AppCompatActivity {
             //Check if response is null
             for (EntityAnnotation words : text) {
                 //Loop through words in response
-                apiResponse += String.format(Locale.ENGLISH, words.getDescription());
-                apiResponse += "\n";
+                //apiResponse += String.format(Locale.ENGLISH, words.getDescription());
+                //apiResponse += "\n";
                 //Start Powercity example, testing on Powercity receipt -----------------------------------------------------------------------------------------------------------------
                 if (words.getDescription().contains("POWERCITY")) {
                     //If the receipt contains POWERCITY then set the shop name to be POWERCITY
@@ -414,8 +418,9 @@ public class Main extends AppCompatActivity {
             message += "nothing";
         }
 
-        message += "Shop Name: " + supplier + "\nTotal spent on card: " +cardAmount;
-        return message +apiResponse;
+        message += "Shop Name: " + supplier + "\nTotal spent: " +cardAmount;
+        //return message +apiResponse;
+        return message;
     }
 
     boolean checkIfDouble(String stringIn){
