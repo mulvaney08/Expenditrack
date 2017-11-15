@@ -460,8 +460,8 @@ public class Main extends AppCompatActivity {
         }
 
         message += "Shop Name: " + supplier + "\nTotal spent: " +totalAmount;
-        return message +apiResponse;
-        //return message;
+        //return message +apiResponse;
+        return message;
     }
 
     boolean checkIfDouble(String stringIn){
