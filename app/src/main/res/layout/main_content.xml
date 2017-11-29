@@ -34,13 +34,12 @@
                 android:id="@+id/image_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="To add an image to be processed please click the button below."/>
+                android:layout_marginBottom="8dp"/>
 
             <ImageView
                 android:id="@+id/main_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:scaleType="fitCenter"/>
         </LinearLayout>
     </ScrollView>

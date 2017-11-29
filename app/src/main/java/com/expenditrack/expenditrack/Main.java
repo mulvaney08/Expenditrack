@@ -17,7 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,11 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -61,9 +68,10 @@ import java.lang.*;
  */
 public class Main extends AppCompatActivity {
 
+    private String username = "Aaron";
+
     private Uri file;
     public String filePath = "";
-
     String timeStamp = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss").format(new Date());
     public String FILE_NAME = "IMG_" + timeStamp + ".jpg";
 
@@ -94,7 +102,12 @@ public class Main extends AppCompatActivity {
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
     private TextView mImageDetails;
+    private EditText shop_name_text;
+    private EditText total_spent;
+    private LinearLayout response;
     private ImageView mMainImage;
+
+    private DatabaseReference mDatabase;
 
     public void uploadToFBase(File image){
         Uri file = Uri.fromFile(image);
@@ -116,6 +129,28 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+//        mDatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                String value = dataSnapshot.getValue(String.class);
+//                Log.d(TAG, "Value is: " + value);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -143,8 +178,18 @@ public class Main extends AppCompatActivity {
             }
         });
 
+        //response = (LinearLayout) findViewById(R.id.);
         mImageDetails = (TextView) findViewById(R.id.image_details);
         mMainImage = (ImageView) findViewById(R.id.main_image);
+    }
+
+    // Read from the database
+
+    private void writeNewReceipt(String username, String supplierName, double totalAmount, String timeStamp){
+        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp);
+
+        mDatabase.child("users").child(username).child("receipts").setValue(r1);
+//        mDatabase.child("users").child("receipts").setValue(r1);
     }
 
     public void startGalleryChooser() {
@@ -218,7 +263,7 @@ public class Main extends AppCompatActivity {
 
                 callCloudVision(bitmap);
                 uploadToFBase(currentImage);
-                mMainImage.setImageBitmap(bitmap);
+                //mMainImage.setImageBitmap(bitmap);
 
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
@@ -305,7 +350,7 @@ public class Main extends AppCompatActivity {
                     BatchAnnotateImagesResponse response = annotateRequest.execute();
                     return convertResponseToString(response);
 
-                    
+
 
                 } catch (GoogleJsonResponseException e) {
                     Log.d(TAG, "failed to make API request because " + e.getContent());
@@ -318,7 +363,7 @@ public class Main extends AppCompatActivity {
 
             protected void onPostExecute(String result) {
                 mImageDetails.setText(result);
-            }
+           }
         }.execute();
     }
 
@@ -459,9 +504,15 @@ public class Main extends AppCompatActivity {
             message += "nothing";
         }
 
-        message += "Shop Name: " + supplier + "\nTotal spent: " +totalAmount;
+        message += "Shop Name: " + supplier + "\nTotal spent: " +totalAmount +"\nTime: "+timeStamp;
         //return message +apiResponse;
+        //shop_name_text = (EditText) findViewById(R.id.shop_name_text);
+        //total_spent = (EditText) findViewById(R.id.total_spent_text);
+        //Receipt r1 = new Receipt("aaron", supplier, Double.parseDouble(totalAmount));
+        writeNewReceipt("aaron",supplier,Double.parseDouble(totalAmount),timeStamp);
+
         return message;
+
     }
 
     boolean checkIfDouble(String stringIn){
