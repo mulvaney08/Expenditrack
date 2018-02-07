@@ -14,15 +14,28 @@ import android.content.pm.Signature;
 import android.support.annotation.NonNull;
 
 import com.google.common.io.BaseEncoding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 /**
  * Provides utility logic for getting the app's SHA1 signature. Used with restricted API keys.
  *
  */
 public class Utils {
+
+    private static String uniqueID;
+    public static DatabaseReference mRef;
+    private static FirebaseDatabase mDatabase;
+
+    private static FirebaseDatabase firebaseDatabase;
+    private static DatabaseReference databaseReference;
+    public static DatabaseReference receiptRef;
+    public static DatabaseReference receiptIDReference;
+
 
     /**
      * Gets the SHA1 signature, hex encoded for inclusion with Google Cloud Platform API requests
@@ -54,5 +67,43 @@ public class Utils {
         } catch (NoSuchAlgorithmException e) {
             return null;
         }
+    }
+
+    public static void initialiseFBase(){
+        getDatabase();
+
+        // Write a message to the database
+        databaseReference = firebaseDatabase.getReferenceFromUrl("https://expenditrack-184010.firebaseio.com/");
+        receiptRef = databaseReference.child("users").child("aaron").child("receipts");
+        receiptIDReference = databaseReference.child("receiptIDs");
+    }
+
+    public static FirebaseDatabase getDatabase() {
+//        if (mDatabase == null) {
+//            mDatabase = FirebaseDatabase.getInstance();
+//            mDatabase.setPersistenceEnabled(true);
+//        }
+//        return mDatabase;
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        return firebaseDatabase;
+    }
+
+    public static void writeReceipt(Receipt r, String id){
+        receiptRef.child(id).setValue(r);
+
+    }
+
+    public static String generateRandomID(){
+        uniqueID = UUID.randomUUID().toString();
+        addReceiptIDToList();
+        return uniqueID;
+    }
+
+    public static String getID(){
+        return uniqueID;
+    }
+
+    public static void addReceiptIDToList(){
+        receiptIDReference.child(getID()).setValue(getID());
     }
 }

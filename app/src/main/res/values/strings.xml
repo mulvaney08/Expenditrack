@@ -1,4 +1,37 @@
 <resources>
     <string name="app_name">Expenditrack</string>
     <string name="hw">Hello World</string>
+
+    <!--Dealers Adapter Layout -->
+
+    <string name="dealers_adapter_email">Email</string>
+
+    <!--Repair Shops Adapter Layout -->
+    <string name="repair_shops_adapter_email">Email</string>
+
+    <!--Username Spinner Content -->
+    <string-array name="receipts_filter_array">
+        <item>All</item>
+        <item>Aaron</item>
+        <item>Bec</item>
+    </string-array>
+
+    <string-array name="category_array">
+        <item>Fashion</item>
+        <item>Travel</item>
+        <item>Books/Music/Stationary</item>
+        <item>IT/Mobile</item>
+        <item>Events</item>
+        <item>Electronics</item>
+        <item>Furniture</item>
+        <item>Video-Games/Accessories</item>
+        <item>Personal Care/Beauty</item>
+        <item>Take-Aways/Restaurants</item>
+        <item>Household Cleaning</item>
+        <item>Groceries</item>
+        <item>Health care</item>
+        <item>Baby Care</item>
+        <item>Alcohol</item>
+        <item>Pet Food/Supplies</item>
+    </string-array>
 </resources>

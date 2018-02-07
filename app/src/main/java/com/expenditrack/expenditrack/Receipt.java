@@ -10,17 +10,27 @@ import java.util.Date;
 
 public class Receipt {
 
-    private String username;
-    private String supplierName;
-    private double totalSpent;
-    private String timeStamp;
+    protected String username;
+    protected String supplierName;
+    protected String totalSpent;
+    protected String timeStamp;
+    protected String id;
 
 
-    public Receipt(String username, String supplierName, double totalSpent, String timeStamp) {
+    public Receipt(String username, String supplierName, String totalSpent, String timeStamp) {
         this.username = username;
         this.supplierName = supplierName;
         this.totalSpent = totalSpent;
         this.timeStamp = timeStamp;
+//        this.id = id;
+    }
+
+    public Receipt(String username, String supplierName, String totalSpent, String timeStamp, String id) {
+        this.username = username;
+        this.supplierName = supplierName;
+        this.totalSpent = totalSpent;
+        this.timeStamp = timeStamp;
+        this.id = id;
     }
 
     public String getUsername() {
@@ -31,8 +41,11 @@ public class Receipt {
         return supplierName;
     }
 
-    public double getTotalSpent() {
+    public String getTotalSpent() {
         return totalSpent;
+    }
+    public String getId(){
+        return id;
     }
 
     public void setUsername(String username) {
@@ -43,7 +56,7 @@ public class Receipt {
         this.supplierName = supplierName;
     }
 
-    public void setTotalSpent(double totalSpent) {
+    public void setTotalSpent(String totalSpent) {
         this.totalSpent = totalSpent;
     }
 
@@ -53,5 +66,9 @@ public class Receipt {
 
     public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public void setId(){
+        this.id = id;
     }
 }

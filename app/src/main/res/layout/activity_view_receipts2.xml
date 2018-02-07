@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_view_receipts2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:orientation="vertical"
+    android:scrollbars="none">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Filter Title"
+        android:layout_gravity="center"
+        android:textAlignment="center"/>
+
+    <!-- Spinner From: https://developer.android.com/guide/topics/ui/controls/spinner.html
+         This menu will be used to filter car dealers by location i.e. South/North Dublin etc -->
+    <Spinner
+        android:id="@+id/receiptsFilterSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp">
+    </Spinner>
+
+    <!-- ListView Styling From: https://stackoverflow.com/questions/1914477/how-do-i-remove-lines-between-listviews-on-android -->
+    <ListView
+        android:id="@+id/receiptsListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp">
+    </ListView>
+
+
+
+
+</LinearLayout>

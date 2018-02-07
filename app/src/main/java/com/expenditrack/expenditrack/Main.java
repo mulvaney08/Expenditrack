@@ -1,6 +1,7 @@
 package com.expenditrack.expenditrack;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -39,6 +40,9 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,6 +58,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.*;
@@ -68,7 +73,7 @@ import java.lang.*;
  */
 public class Main extends AppCompatActivity {
 
-    private String username = "Aaron";
+    private String username = "aaron";
 
     private Uri file;
     public String filePath = "";
@@ -81,7 +86,7 @@ public class Main extends AppCompatActivity {
     StorageReference storageRef = storage.getReference().child("Aaron/Receipts/"+FILE_NAME);
 
     String message = "";
-    String supplier = "";
+    private String supplier = "";
     String apiResponse = "\n\nThis is what we found:\n\n";
     String totalAmount = "";
     String cardAmount = "";
@@ -104,10 +109,14 @@ public class Main extends AppCompatActivity {
     private TextView mImageDetails;
     private EditText shop_name_text;
     private EditText total_spent;
+    private EditText username_text;
     private LinearLayout response;
     private ImageView mMainImage;
 
+
     private DatabaseReference mDatabase;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     public void uploadToFBase(File image){
         Uri file = Uri.fromFile(image);
@@ -125,15 +134,27 @@ public class Main extends AppCompatActivity {
             }
         });
     }
+//
+//    public static void initialiseFBase(){
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//
+//        // Write a message to the database
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // do your stuff
+        } else {
+            signInAnonymously();
+        }
+
+        Utils.initialiseFBase();
 
 //        mDatabase.addValueEventListener(new ValueEventListener() {
 //            @Override
@@ -183,14 +204,36 @@ public class Main extends AppCompatActivity {
         mMainImage = (ImageView) findViewById(R.id.main_image);
     }
 
+    private void signInAnonymously(){
+        mAuth.signInAnonymously().addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+            @Override public void onSuccess(AuthResult authResult) {
+                // do your stuff
+            }
+        }) .addOnFailureListener(this, new OnFailureListener() {
+            @Override public void onFailure(@NonNull Exception exception) {
+                Log.e("TAG", "signInAnonymously:FAILURE", exception);
+            }
+        });
+    }
+
+    public void viewReceiptsActivity(View view){
+        Intent intent = new Intent(this,viewReceipts.class);
+        startActivity(intent);
+    }
+    public void editReceiptActivity(View view){
+        Intent intent = new Intent(this,editReceipt.class);
+        startActivity(intent);
+    }
+
+
     // Read from the database
 
-    private void writeNewReceipt(String username, String supplierName, double totalAmount, String timeStamp){
-        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp);
-
-        mDatabase.child("users").child(username).child("receipts").setValue(r1);
-//        mDatabase.child("users").child("receipts").setValue(r1);
-    }
+//    private void writeNewReceipt(String username, String supplierName, double totalAmount, String timeStamp){
+//        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp);
+//
+//        mDatabase.child("users").child(username).child("receipts").child("item12").setValue(r1);
+////        mDatabase.child("users").child("receipts").setValue(r1);
+//    }
 
     public void startGalleryChooser() {
         if (CheckPermissions.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -275,6 +318,7 @@ public class Main extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void callCloudVision(final Bitmap bitmap) throws IOException {
         // Switch text to loading
         mImageDetails.setText("Scanning Image");
@@ -363,7 +407,7 @@ public class Main extends AppCompatActivity {
 
             protected void onPostExecute(String result) {
                 mImageDetails.setText(result);
-           }
+            }
         }.execute();
     }
 
@@ -425,6 +469,9 @@ public class Main extends AppCompatActivity {
                         if (checkIfDouble(tempString)) {
                             totalAmount = tempString;
                         }
+                        else {
+                            totalAmount = "0";
+                        }
                     }
                     //Variation 2 card captured with space afterwards Card
                     else if (words.getDescription().contains("Card ")) {
@@ -440,6 +487,9 @@ public class Main extends AppCompatActivity {
                         //Call method to check if the string value in tempString can be parsed to double to ensure the storage of random strings does not occur.
                         if (checkIfDouble(tempString)) {
                             totalAmount = tempString;
+                        }
+                        else {
+                            totalAmount = "0";
                         }
                     }
                     //Variation 3 card captured without colon or space afterwards just the number needed to capture total spent on card
@@ -457,6 +507,9 @@ public class Main extends AppCompatActivity {
                         if (checkIfDouble(tempString)) {
                             totalAmount = tempString;
                         }
+                        else {
+                            totalAmount = "0";
+                        }
                     }
                 } else if (words.getDescription().contains("copan") || words.getDescription().contains("COPAN")){
 
@@ -467,17 +520,17 @@ public class Main extends AppCompatActivity {
                     //tempString = words.getDescription().substring(words.getDescription().indexOf("TOTAL") - 6, words.getDescription().indexOf("TOTAL") - 5);
 
                     //if (checkIfDouble(tempString) && checkIfInt(tempString)) {
-                        if (words.getDescription().contains("TOTAL")) {
+                    if (words.getDescription().contains("TOTAL")) {
 
-                            indexOfDecimal = words.getDescription().indexOf("TOTAL") - 26;
-                            indexOfEndOfDecimal = words.getDescription().indexOf("TOTAL") - 22;
+                        indexOfDecimal = words.getDescription().indexOf("TOTAL") - 26;
+                        indexOfEndOfDecimal = words.getDescription().indexOf("TOTAL") - 22;
 
 //                                if (checkIfDouble(words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal))) {
 //                                }
 
-                            totalAmount = words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal);
+                        totalAmount = words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal);
 
-                        }
+                    }
                     // }
 //                  else if (!checkIfInt(words.getDescription().substring(words.getDescription().indexOf("TOTAL") - 6, words.getDescription().indexOf("TOTAL") - 5))) {
 //                        if (words.getDescription().contains("TOTAL")) {
@@ -493,9 +546,9 @@ public class Main extends AppCompatActivity {
 //                        }
 //                      }
 //
-                    }
+                }
 
-                    //End Powercity example, testing on Powercity receipt ---------------------------------------------------------------------------------------------------------------------
+                //End Powercity example, testing on Powercity receipt ---------------------------------------------------------------------------------------------------------------------
 
 
             }
@@ -509,10 +562,55 @@ public class Main extends AppCompatActivity {
         //shop_name_text = (EditText) findViewById(R.id.shop_name_text);
         //total_spent = (EditText) findViewById(R.id.total_spent_text);
         //Receipt r1 = new Receipt("aaron", supplier, Double.parseDouble(totalAmount));
-        writeNewReceipt("aaron",supplier,Double.parseDouble(totalAmount),timeStamp);
+
+//        if(supplier!=null && totalAmount!=null){
+//           writeNewReceipt("Aaron",supplier,Double.parseDouble(totalAmount),timeStamp);
+//        } ------------------------------------------------------------------------------------------- Call after edit receipt is confirmed
+
+        callEditReceipt(supplier,totalAmount);
 
         return message;
 
+    }
+
+    public void callEditReceipt(String supplierName, String totalAmount){
+        Intent intent = new Intent(this,editReceipt.class);
+
+        intent.putExtra("Supplier", supplierName);
+        intent.putExtra("Total", totalAmount);
+        intent.putExtra("Buyer", username);
+//        intent.putExtra("FirebaseRef", mDatabase);
+
+        startActivity(intent);
+
+
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                setContentView( R.layout.activity_edit_receipt);
+//
+//                shop_name_text = (EditText) findViewById(R.id.supplier_name_field);
+//                total_spent = (EditText) findViewById(R.id.total_spent_field);
+//                username_text = (EditText) findViewById(R.id.buyer_name_field);
+//
+//                //shop_name_text.setText(supplierName);
+//            }
+//        });
+
+
+
+//        if(totalAmount!= null || supplierName != null){
+//            total_spent.setText(totalAmount);
+//            shop_name_text.setText(supplierName);
+//        }
+//        else if(supplierName == null){
+//            shop_name_text.setText("Unknown");
+//        }
+//        else {
+//            shop_name_text.setText("Unknown");
+//            total_spent.setText("0.0");
+//        }
     }
 
     boolean checkIfDouble(String stringIn){
