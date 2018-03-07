@@ -168,7 +168,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/confirmReceipt"
+            android:id="@+id/editReceipt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"

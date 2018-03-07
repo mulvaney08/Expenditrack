@@ -35,6 +35,7 @@ public class Utils {
     private static DatabaseReference databaseReference;
     public static DatabaseReference receiptRef;
     public static DatabaseReference receiptIDReference;
+    //public static String updateKey = receiptRef.child().getKey();
 
 
     /**
@@ -72,38 +73,31 @@ public class Utils {
     public static void initialiseFBase(){
         getDatabase();
 
-        // Write a message to the database
         databaseReference = firebaseDatabase.getReferenceFromUrl("https://expenditrack-184010.firebaseio.com/");
         receiptRef = databaseReference.child("users").child("aaron").child("receipts");
         receiptIDReference = databaseReference.child("receiptIDs");
     }
 
     public static FirebaseDatabase getDatabase() {
-//        if (mDatabase == null) {
-//            mDatabase = FirebaseDatabase.getInstance();
-//            mDatabase.setPersistenceEnabled(true);
-//        }
-//        return mDatabase;
         firebaseDatabase = FirebaseDatabase.getInstance();
         return firebaseDatabase;
     }
 
-    public static void writeReceipt(Receipt r, String id){
-        receiptRef.child(id).setValue(r);
-
+    public static void writeReceipt(Receipt r){
+        receiptRef.child(r.getId()).setValue(r);
     }
 
-    public static String generateRandomID(){
-        uniqueID = UUID.randomUUID().toString();
-        addReceiptIDToList();
-        return uniqueID;
-    }
+//    public static String generateRandomID(){
+//        uniqueID = UUID.randomUUID().toString();
+//        addReceiptIDToList();
+//        return uniqueID;
+//    }
+//
+//    public static String getID(){
+//        return uniqueID;
+//    }
 
-    public static String getID(){
-        return uniqueID;
-    }
-
-    public static void addReceiptIDToList(){
-        receiptIDReference.child(getID()).setValue(getID());
-    }
+//    public static void addReceiptIDToList(){
+//        receiptIDReference.child(getID()).setValue(getID());
+//    }
 }

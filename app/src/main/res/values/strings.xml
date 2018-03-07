@@ -34,4 +34,5 @@
         <item>Alcohol</item>
         <item>Pet Food/Supplies</item>
     </string-array>
+    <string name="title_activity_view_pie_charts">view_pie_charts</string>
 </resources>

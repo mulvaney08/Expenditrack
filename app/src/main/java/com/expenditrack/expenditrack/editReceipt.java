@@ -6,6 +6,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class editReceipt extends AppCompatActivity {
     private DatePicker datePicker;
@@ -29,12 +33,12 @@ public class editReceipt extends AppCompatActivity {
     private int year, month, day;
     private String supplier_name;
 
-    Button confirm;
+    Button edit;
     private DatabaseReference mDatabase;
     String supplier;
     String total;
     String buyer;
-    String id = "emptyID";
+    String id;
     Receipt oldReceipt;
 
     @Override
@@ -60,21 +64,13 @@ public class editReceipt extends AppCompatActivity {
         buyer = myIntent.getStringExtra("Buyer");
         id = myIntent.getStringExtra("ID");
 
-
-        if(id == null){
-            id = "empty";
-        }
-        else {
-        }
-
-        final TextView supplierName = (TextView)findViewById(R.id.supplier_name_field);
-        final TextView totalSpent = (TextView)findViewById(R.id.total_spent_field);
-        final TextView buyerView = (TextView)findViewById(R.id.buyer_name_field);
+        final EditText supplierName = (EditText)findViewById(R.id.supplier_name_field);
+        final EditText totalSpent = (EditText)findViewById(R.id.total_spent_field);
+        final EditText buyerView = (EditText)findViewById(R.id.buyer_name_field);
 
         supplierName.setText(supplier);
         totalSpent.setText(total);
         buyerView.setText(buyer);
-
 
         dateView = (TextView) findViewById(R.id.showDate);
         calendar = Calendar.getInstance();
@@ -90,23 +86,26 @@ public class editReceipt extends AppCompatActivity {
         spinner.setAdapter(adapter);
         //spinner.setOnItemSelectedListener();
 
-        oldReceipt = new Receipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString());
-        confirm = (Button)findViewById(R.id.confirmReceipt);
+        edit = (Button)findViewById(R.id.editReceipt);
 
-        confirm.setOnClickListener(new View.OnClickListener() {
+        edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Utils.receiptIDReference.child(id).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue() != null){
-                            Utils.writeReceipt(oldReceipt,Utils.getID());
-
-                        } else{
-                            writeNewReceipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString(), Utils.generateRandomID());
-
+                        oldReceipt = new Receipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString(), id);
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                Utils.receiptRef.child(id).setValue(oldReceipt);
                         }
+//                        if(dataSnapshot.getValue() != null){
+//                            Utils.writeReceipt(oldReceipt,Utils.getID());
+//
+//                        } else{
+//                            writeNewReceipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString(), Utils.generateRandomID());
+//
+//                        }
                     }
 
                     @Override
@@ -128,9 +127,9 @@ public class editReceipt extends AppCompatActivity {
     }
 
     private void writeNewReceipt(String username, String supplierName, String totalAmount, String timeStamp, String id){
-        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp, id);
+        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp);
 
-        Utils.writeReceipt(r1, id);
+        Utils.writeReceipt(r1);
 //        mDatabase.child("users").child(username).child("receipts").child("item12").setValue(r1);
 //        mDatabase.child("users").child("receipts").setValue(r1);
     }

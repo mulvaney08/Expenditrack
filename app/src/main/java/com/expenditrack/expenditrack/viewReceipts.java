@@ -2,6 +2,7 @@ package com.expenditrack.expenditrack;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -90,27 +91,6 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
 
                 startActivity(it);
             }
-
-//            public void onClick(View v) {
-//
-//                for(int i =0;i<receiptList.size(); i++){
-//                    String supplierName = receiptList.get(i).getSupplierName();
-//                    String timeStamp = receiptList.get(i).getTimeStamp();
-//                    Double totalSpent = receiptList.get(i).getTotalSpent();
-//                    String username = receiptList.get(i).getUsername();
-//
-//                    ArrayList<String>stringList = new ArrayList<>();
-//
-//                     String text = ("Supplier : " + supplierName + "\n" +
-//                            "Timestamp: " + timeStamp + "\n" +
-//                            "Total Spent: " + totalSpent + "\n" +
-//                            "Username: " + username + "\n" + "\n");
-//
-//                     stringList.add(text);
-//                     //https://www.tutorialspoint.com/android/android_list_view.html
-//                     //receiptTv.setText(stringList(i));
-//                }
-//            }
         });
        getContents();
     }
@@ -136,7 +116,7 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
                     String id = ds.getValue().toString();
 
 
-                      Receipt newReceipt = new Receipt(username, supplierName, totalSpent, timeStamp, id);
+                      Receipt newReceipt = new Receipt(username, supplierName, totalSpent, timeStamp);
                       receiptList.add(newReceipt);
                 }
                 receiptsListView.setAdapter(null);
@@ -148,7 +128,10 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
 
             }
         });
-        Toast.makeText(this,"Receipts Loaded",Toast.LENGTH_SHORT).show();
+        Snackbar receiptsLoaded = Snackbar.make(findViewById(R.id.activity_view_receipts2), "Receipts Loaded", Snackbar.LENGTH_LONG);
+        receiptsLoaded.show();
+        //Toast.makeText(this,"Receipts Loaded",Toast.LENGTH_SHORT).show();
+
     }
 
     public void filter(){

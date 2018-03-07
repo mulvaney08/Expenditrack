@@ -107,10 +107,7 @@ public class Main extends AppCompatActivity {
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
     private TextView mImageDetails;
-    private EditText shop_name_text;
-    private EditText total_spent;
-    private EditText username_text;
-    private LinearLayout response;
+
     private ImageView mMainImage;
 
 
@@ -225,15 +222,15 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void viewGraphs(View view){
+        Intent intent = new Intent(this,viewGraphs.class);
+        startActivity(intent);
+    }
 
-    // Read from the database
-
-//    private void writeNewReceipt(String username, String supplierName, double totalAmount, String timeStamp){
-//        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp);
-//
-//        mDatabase.child("users").child(username).child("receipts").child("item12").setValue(r1);
-////        mDatabase.child("users").child("receipts").setValue(r1);
-//    }
+    public void confirmReceiptActivity(View view){
+        Intent intent = new Intent(this,ConfirmReceipt.class);
+        startActivity(intent);
+    }
 
     public void startGalleryChooser() {
         if (CheckPermissions.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -559,58 +556,30 @@ public class Main extends AppCompatActivity {
 
         message += "Shop Name: " + supplier + "\nTotal spent: " +totalAmount +"\nTime: "+timeStamp;
         //return message +apiResponse;
-        //shop_name_text = (EditText) findViewById(R.id.shop_name_text);
-        //total_spent = (EditText) findViewById(R.id.total_spent_text);
-        //Receipt r1 = new Receipt("aaron", supplier, Double.parseDouble(totalAmount));
 
-//        if(supplier!=null && totalAmount!=null){
-//           writeNewReceipt("Aaron",supplier,Double.parseDouble(totalAmount),timeStamp);
-//        } ------------------------------------------------------------------------------------------- Call after edit receipt is confirmed
-
-        callEditReceipt(supplier,totalAmount);
+        callConfirmReceipt(supplier,totalAmount);
 
         return message;
 
     }
 
-    public void callEditReceipt(String supplierName, String totalAmount){
-        Intent intent = new Intent(this,editReceipt.class);
-
+    public Intent pushValuesToReceipt(Intent intent, String supplierName, String totalAmount){
         intent.putExtra("Supplier", supplierName);
         intent.putExtra("Total", totalAmount);
         intent.putExtra("Buyer", username);
-//        intent.putExtra("FirebaseRef", mDatabase);
 
-        startActivity(intent);
-
-
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
+        return intent;
+    }
 //
-//                setContentView( R.layout.activity_edit_receipt);
+//    public void callEditReceipt(String supplierName, String totalAmount){
+//        Intent intent = new Intent(this,editReceipt.class);
 //
-//                shop_name_text = (EditText) findViewById(R.id.supplier_name_field);
-//                total_spent = (EditText) findViewById(R.id.total_spent_field);
-//                username_text = (EditText) findViewById(R.id.buyer_name_field);
-//
-//                //shop_name_text.setText(supplierName);
-//            }
-//        });
+//        startActivity(pushValuesToReceipt(intent,supplierName,totalAmount));
+//    }
 
-
-
-//        if(totalAmount!= null || supplierName != null){
-//            total_spent.setText(totalAmount);
-//            shop_name_text.setText(supplierName);
-//        }
-//        else if(supplierName == null){
-//            shop_name_text.setText("Unknown");
-//        }
-//        else {
-//            shop_name_text.setText("Unknown");
-//            total_spent.setText("0.0");
-//        }
+    public void callConfirmReceipt(String supplierName, String totalAmount){
+        Intent intent = new Intent(this,ConfirmReceipt.class);
+        startActivity(pushValuesToReceipt(intent,supplierName,totalAmount));
     }
 
     boolean checkIfDouble(String stringIn){
