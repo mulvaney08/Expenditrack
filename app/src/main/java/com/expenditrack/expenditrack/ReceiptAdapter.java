@@ -34,11 +34,13 @@ public class ReceiptAdapter extends ArrayAdapter<Receipt>{
         TextView tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
         TextView tvTotalSpent = (TextView) convertView.findViewById(R.id.tvTotalSpent);
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
+        TextView category = (TextView) convertView.findViewById(R.id.category);
 
         tvSupplierName.setText(receipt.supplierName);
         tvTimestamp.setText(receipt.timeStamp);
         tvTotalSpent.setText(receipt.totalSpent);
         tvUsername.setText(receipt.username);
+        category.setText(receipt.category);
 
         return convertView;
 

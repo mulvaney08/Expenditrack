@@ -40,7 +40,8 @@
         <activity android:name=".editReceipt" />
         <activity android:name=".ConfirmReceipt" />
         <activity android:name=".viewGraphs" />
-        <activity android:name=".view_pie_charts"></activity>
+        <activity android:name=".view_pie_charts" />
+        <activity android:name=".view_category_pie"></activity>
     </application>
 
 </manifest>

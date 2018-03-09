@@ -33,7 +33,7 @@ public class ConfirmReceipt extends AppCompatActivity {
     String supplier;
     String total;
     String buyer;
-    String id;
+    String category;
     Receipt receipt;
 
     @Override
@@ -64,7 +64,7 @@ public class ConfirmReceipt extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year, month+1, day);
 
-        Spinner spinner  = (Spinner) findViewById(R.id.categorySpinner);
+        final Spinner spinner  = (Spinner) findViewById(R.id.categorySpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.category_array, R.layout.category_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -75,7 +75,7 @@ public class ConfirmReceipt extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                receipt = new Receipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString());
+                receipt = new Receipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString(), spinner.getSelectedItem().toString());
                 writeNewReceipt(receipt);
                 viewReceipts();
             }

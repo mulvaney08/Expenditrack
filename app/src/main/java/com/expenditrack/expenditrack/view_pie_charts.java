@@ -1,6 +1,7 @@
 package com.expenditrack.expenditrack;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.graphics.*;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -55,7 +57,8 @@ public class view_pie_charts extends AppCompatActivity {
     private static double shop3SliceSize;
     private static double shop4SliceSize;
 
-    DecimalFormat df = new DecimalFormat("#.#");
+
+    TextView shop1, shop2, shop3, shop4;
 
     public void calculateSliceOfPie(double totalShop1, double totalShop2, double totalShop3, double totalShop4){
 
@@ -79,6 +82,12 @@ public class view_pie_charts extends AppCompatActivity {
         int scale = (int) Math.pow(10, precision);
         return (double) Math.round(value * scale) / scale;
     }
+
+    public void viewCategoryGraph(View view){
+        Intent intent = new Intent(this,view_category_pie.class);
+        startActivity(intent);
+    }
+
 
     public void getContents(){
         //Get contents from Firebase into String From : https://www.youtube.com/watch?v=WDGmpvKpHyw
@@ -109,6 +118,15 @@ public class view_pie_charts extends AppCompatActivity {
                     }
                 }
                 calculateSliceOfPie(totalShop1,totalShop2,totalShop3,totalShop4);
+                shop1 = (TextView) findViewById(R.id.shop1_info);
+                shop2 = (TextView) findViewById(R.id.shop2_info);
+                shop3 = (TextView) findViewById(R.id.shop3_info);
+                shop4 = (TextView) findViewById(R.id.shop4_info);
+
+                shop1.setText(s1.getTitle() + ": €"  +totalShop1);
+                shop2.setText(s2.getTitle() + ": €"  +totalShop2);
+                shop3.setText(s3.getTitle() + ": €"  +totalShop3);
+                shop4.setText(s4.getTitle() + ": €"  +totalShop4);
             }
 
 
@@ -153,6 +171,9 @@ public class view_pie_charts extends AppCompatActivity {
                         deselectAll();
                         setSelected(segment, !isSelected);
                         pie.redraw();
+                        if(segment.getTitle().equalsIgnoreCase("Boots")){
+                            viewCategoryGraph(view);
+                        }
                     }
                 }
                 return false;
@@ -178,6 +199,8 @@ public class view_pie_charts extends AppCompatActivity {
                 }
             }
         });
+
+
 
 //        donutSizeSeekBar = (SeekBar) findViewById(R.id.donutSizeSeekBar);
 //        donutSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -205,6 +228,8 @@ public class view_pie_charts extends AppCompatActivity {
         s2 = new Segment("Boots", shop2SliceSize);
         s3 = new Segment("Tesco", shop3SliceSize);
         s4 = new Segment("Easons", shop4SliceSize);
+
+
 
         EmbossMaskFilter emf = new EmbossMaskFilter(
                 new float[]{1, 1, 1}, 0.4f, 10, 8.2f);
@@ -267,7 +292,7 @@ public class view_pie_charts extends AppCompatActivity {
         });
 
         // the animation will run for 1.5 seconds:
-        animator.setDuration(1500);
+        animator.setDuration(1000);
         animator.start();
 
 //        Segment segment = new Segment("Powercity", 10);

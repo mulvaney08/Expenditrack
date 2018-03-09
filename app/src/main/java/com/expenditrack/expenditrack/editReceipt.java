@@ -126,8 +126,8 @@ public class editReceipt extends AppCompatActivity {
         startActivity(viewReceipt);
     }
 
-    private void writeNewReceipt(String username, String supplierName, String totalAmount, String timeStamp, String id){
-        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp);
+    private void writeNewReceipt(String username, String supplierName, String totalAmount, String timeStamp, String id, String category){
+        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp, category);
 
         Utils.writeReceipt(r1);
 //        mDatabase.child("users").child(username).child("receipts").child("item12").setValue(r1);

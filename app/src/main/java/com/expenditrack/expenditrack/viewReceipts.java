@@ -111,12 +111,13 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String supplierName = ds.child("supplierName").getValue().toString();
                     String timeStamp = ds.child("timeStamp").getValue().toString();
-                    String totalSpent = ds.child("totalSpent").getValue().toString();
+                    String totalSpent = "€" + ds.child("totalSpent").getValue().toString();
                     String username = ds.child("username").getValue().toString();
-                    String id = ds.getValue().toString();
+//                    String id = ds.getValue().toString();
+                    String category = ds.child("category").getValue().toString();
 
 
-                      Receipt newReceipt = new Receipt(username, supplierName, totalSpent, timeStamp);
+                      Receipt newReceipt = new Receipt(username, supplierName, totalSpent, timeStamp, category);
                       receiptList.add(newReceipt);
                 }
                 receiptsListView.setAdapter(null);

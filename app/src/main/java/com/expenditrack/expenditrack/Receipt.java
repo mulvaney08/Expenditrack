@@ -19,24 +19,17 @@ public class Receipt {
     protected String supplierName;
     protected String totalSpent;
     protected String timeStamp;
+    protected String category;
     protected String id;
 
-    public Receipt(String username, String supplierName, String totalSpent, String timeStamp) {
+    public Receipt(String username, String supplierName, String totalSpent, String timeStamp, String category) {
         this.username = username;
         this.supplierName = supplierName;
         this.totalSpent = totalSpent;
         this.timeStamp = timeStamp;
+        this.category = category;
         this.id = UUID.randomUUID().toString();
     }
-
-    public Receipt(String username, String supplierName, String totalSpent, String timeStamp, String id) {
-        this.username = username;
-        this.supplierName = supplierName;
-        this.totalSpent = totalSpent;
-        this.timeStamp = timeStamp;
-        this.id = id;
-    }
-
 
     public String getUsername() {
         return username;
@@ -54,25 +47,25 @@ public class Receipt {
         return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
-    public void setTotalSpent(String totalSpent) {
-        this.totalSpent = totalSpent;
-    }
-
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+//
+//    public void setSupplierName(String supplierName) {
+//        this.supplierName = supplierName;
+//    }
+//
+//    public void setTotalSpent(String totalSpent) {
+//        this.totalSpent = totalSpent;
+//    }
+//
+//    public String getTimeStamp() {
+//        return timeStamp;
+//    }
+//
+//    public void setTimeStamp(String timeStamp) {
+//        this.timeStamp = timeStamp;
+//    }
 
     @Exclude
     public Map<String, Object> toMap() {
@@ -82,6 +75,7 @@ public class Receipt {
         result.put("timestamp", timeStamp);
         result.put("totalSpent", totalSpent);
         result.put("username", username);
+        result.put("category", category);
         return result;
     }
 }
