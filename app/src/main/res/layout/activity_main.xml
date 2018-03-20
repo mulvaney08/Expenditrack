@@ -14,46 +14,41 @@
     android:fitsSystemWindows="true"
     tools:context="com.expenditrack.expenditrack.Main"
     >
-    <Button
-        android:onClick="viewReceiptsActivity"
-        android:layout_marginTop="75dp"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="View Receipts Activity"/>
-    <Button
-        android:onClick="editReceiptActivity"
-        android:layout_marginTop="150dp"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="Edit Receipt Activity"/>
-    <Button
-        android:onClick="viewGraphs"
-        android:layout_marginTop="225dp"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="View Graphs"/>
+
+    <include layout="@layout/main_content" />
+
+    <include layout="@layout/test_responses" />
+
+    <!--<Button-->
+        <!--android:onClick="viewReceiptsActivity"-->
+        <!--android:layout_marginLeft="100dp"-->
+        <!--android:layout_marginTop="75dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:text="View Receipts Activity"/>-->
+    <!--<Button-->
+        <!--android:onClick="editReceiptActivity"-->
+        <!--android:layout_marginLeft="100dp"-->
+        <!--android:layout_marginTop="150dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:text="Edit Receipt Activity"/>-->
+    <!--<Button-->
+        <!--android:onClick="viewGraphs"-->
+        <!--android:layout_marginLeft="100dp"-->
+        <!--android:layout_marginTop="225dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:text="View Graphs"/>-->
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/main_content" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_gallery" />
+
 
 </android.support.design.widget.CoordinatorLayout>

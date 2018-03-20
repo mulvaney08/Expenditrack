@@ -12,11 +12,17 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -73,6 +79,7 @@ import java.lang.*;
  */
 public class Main extends AppCompatActivity {
 
+    private DrawerLayout mDrawerLayout;
     private String username = "aaron";
 
     private Uri file;
@@ -170,8 +177,44 @@ public class Main extends AppCompatActivity {
 //        });
 
         setContentView(R.layout.activity_main);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        final Intent viewReceiptsIntent = new Intent(this,viewReceipts.class);
+        final Intent viewGraphsIntent = new Intent(this,viewGraphs.class);
+
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        //Menu menu = navigationView.getMenu();
+                        // set item as selected to persist highlight
+                        // close drawer when item is tapped
+
+                        if(menuItem.getItemId() == R.id.viewReceipts){
+                            menuItem.setChecked(true);
+                            startActivity(viewReceiptsIntent);
+                        }
+                        else if(menuItem.getItemId() == R.id.viewGraphs){
+                            menuItem.setChecked(true);
+                            startActivity(viewGraphsIntent);
+                        }
+
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+
+                        return true;
+                    }
+                });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +242,16 @@ public class Main extends AppCompatActivity {
         //response = (LinearLayout) findViewById(R.id.);
         mImageDetails = (TextView) findViewById(R.id.image_details);
         mMainImage = (ImageView) findViewById(R.id.main_image);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void signInAnonymously(){

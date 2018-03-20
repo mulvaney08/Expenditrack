@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:icon="@mipmap/ic_home"
+            android:title="Home"
+            />
+        <item
+            android:id="@+id/viewReceipts"
+            android:icon="@drawable/ic_view_list_black_24dp"
+            android:title="View Recepits"
+            />
+        <item
+            android:id="@+id/viewGraphs"
+            android:icon="@drawable/ic_pie_chart_black_24dp"
+            android:title="View Graphs"
+            />
+    </group>
+</menu>

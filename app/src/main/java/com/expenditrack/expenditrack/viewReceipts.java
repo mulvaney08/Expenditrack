@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +29,7 @@ import java.util.List;
 
 // Get Data From Firebase into Android: https://www.captechconsulting.com/blogs/firebase-realtime-database-android-tutorial
 //https://stackoverflow.com/questions/39800547/read-data-from-firebase-database
-public class viewReceipts extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class viewReceipts extends AppCompatActivity {
 
 
     String username = "aaron";
@@ -33,6 +37,7 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
     //Views
     ListView receiptsListView;
     Spinner spinner;
+    EditText search;
 
     ArrayAdapter<Receipt> arrayAdapter;
     ReceiptAdapter adapter;
@@ -63,11 +68,11 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
         receiptsListView = (ListView) findViewById(R.id.receiptsListView);
 
         //Spinner
-        Spinner spinner  = (Spinner) findViewById(R.id.receiptsFilterSpinner);
+        //Spinner spinner  = (Spinner) findViewById(R.id.receiptsFilterSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.receipts_filter_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        //spinner.setAdapter(adapter);
+        //spinner.setOnItemSelectedListener(this);
         //final TextView receiptTv = (TextView) findViewById(R.id.receiptTv);
         //Button viewDbBtn = (Button) findViewById(R.id.dbBtn);
 
@@ -93,6 +98,24 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
             }
         });
        getContents();
+       search = (EditText) findViewById(R.id.searchReceipts);
+       search.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filter();
+           }
+
+           @Override
+           public void afterTextChanged(Editable editable) {
+
+           }
+       });
+//       filter();
     }
 
     @Override
@@ -137,66 +160,56 @@ public class viewReceipts extends AppCompatActivity implements AdapterView.OnIte
 
     public void filter(){
         filterList = new ArrayList<>();
-        ReceiptAdapter filterAdapter = new ReceiptAdapter(this, filterList);
+        final ReceiptAdapter filterAdapter = new ReceiptAdapter(this, filterList);
 
-        if(spinnerLocation == 1){
-            filterList.clear();
-            for (int i = 0; i < receiptList.size();i++){
-                if(receiptList.get(i).getUsername().equals("aaron")){
-                    Receipt newReceipt = (receiptList.get(i));
-                    filterList.add(newReceipt);
-                }
-                else {
+                String searchText = search.getText().toString();
+                Log.d("Search Query:" , searchText);
+                filterList.clear();
+                for (int j = 0; j < receiptList.size();j++){
+                    if(receiptList.get(j).getSupplierName().toLowerCase().contains(searchText.toLowerCase()) ||
+                            receiptList.get(j).getUsername().toLowerCase().contains(searchText.toLowerCase()) ||
+                            receiptList.get(j).getTimeStamp().toLowerCase().contains(searchText.toLowerCase()) ||
+                            receiptList.get(j).getCategory().toLowerCase().contains(searchText.toLowerCase()) ||
+                            receiptList.get(j).getTotalSpent().contains(searchText)){
+                        Receipt newReceipt = (receiptList.get(j));
+                        filterList.add(newReceipt);
+                        Log.d("Test", receiptList.get(j).getSupplierName());
+                    }
+                    else {
 
+                    }
                 }
-            }
-            Toast.makeText(this,"Filtered by Aaron's Receipts!",Toast.LENGTH_SHORT).show();
-        }
-
-        else if(spinnerLocation == 2){
-            filterList.clear();
-            for (int i = 0; i < receiptList.size();i++){
-                if(receiptList.get(i).getUsername().equals("Bec")){
-                    Receipt newReceipt = (receiptList.get(i));
-                    filterList.add(newReceipt);
-                }
-                else {
-
-                }
-            }
-            Toast.makeText(this,"Filtered by Bec's Receipts!",Toast.LENGTH_SHORT).show();
-        }
 
         receiptsListView.setAdapter(null);
         receiptsListView.setAdapter(filterAdapter);
 
     }
 
-    //Spinner
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
-        if(parent.getSelectedItemPosition() == 0){
-            spinnerLocation = 0;
-            listIsFiltered = false;
-            getContents();
-        }
+//    //Spinner
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+//        if(parent.getSelectedItemPosition() == 0){
+//            spinnerLocation = 0;
+//            listIsFiltered = false;
+//            getContents();
+//        }
+//
+//        if(parent.getSelectedItemPosition() == 1){
+//            spinnerLocation = 1;
+//            listIsFiltered = true;
+//            filter();
+//        }
+//
+//        if(parent.getSelectedItemPosition() == 2){
+//            spinnerLocation = 2;
+//            listIsFiltered = true;
+//            filter();
+//        }
+//    }
 
-        if(parent.getSelectedItemPosition() == 1){
-            spinnerLocation = 1;
-            listIsFiltered = true;
-            filter();
-        }
-
-        if(parent.getSelectedItemPosition() == 2){
-            spinnerLocation = 2;
-            listIsFiltered = true;
-            filter();
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//
+//    }
 
 }

@@ -47,7 +47,15 @@ public class Receipt {
         return id;
     }
 
-//    public void setUsername(String username) {
+    public String getCategory() {
+        return category;
+    }
+
+    public String getTimeStamp(){
+        return timeStamp;
+    }
+
+    //    public void setUsername(String username) {
 //        this.username = username;
 //    }
 //
