@@ -36,12 +36,25 @@
                 android:resource="@xml/paths" />
         </provider>
 
-        <activity android:name=".viewReceipts" />
-        <activity android:name=".editReceipt" />
-        <activity android:name=".ConfirmReceipt" />
-        <activity android:name=".viewGraphs" />
-        <activity android:name=".view_pie_charts" />
-        <activity android:name=".view_category_pie"></activity>
+        <activity
+            android:name=".viewReceipts"
+            android:parentActivityName=".Main">
+        </activity>
+        <activity android:name=".editReceipt"
+            android:parentActivityName=".viewReceipts">
+        </activity>
+        <activity android:name=".ConfirmReceipt"
+            android:parentActivityName=".Main">
+        </activity>
+        <activity android:name=".viewGraphs"
+            android:parentActivityName=".Main">
+        </activity>
+        <activity android:name=".view_pie_charts"
+            android:parentActivityName=".viewGraphs">
+        </activity>
+        <activity android:name=".view_category_pie"
+            android:parentActivityName=".view_pie_charts">
+        </activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.expenditrack.expenditrack;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,7 +18,7 @@ import android.widget.Toast;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
+import android.support.v7.widget.Toolbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,6 +77,13 @@ public class viewReceipts extends AppCompatActivity {
         //final TextView receiptTv = (TextView) findViewById(R.id.receiptTv);
         //Button viewDbBtn = (Button) findViewById(R.id.dbBtn);
 
+        Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
         receiptsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -120,7 +128,7 @@ public class viewReceipts extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp(){
-        finish();
+        onBackPressed();
         return true;
     }
 
@@ -184,6 +192,8 @@ public class viewReceipts extends AppCompatActivity {
         receiptsListView.setAdapter(filterAdapter);
 
     }
+
+
 
 //    //Spinner
 //    @Override

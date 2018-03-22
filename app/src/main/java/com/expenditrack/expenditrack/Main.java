@@ -182,7 +182,7 @@ public class Main extends AppCompatActivity {
         final Intent viewGraphsIntent = new Intent(this,viewGraphs.class);
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
-
+        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -293,6 +293,13 @@ public class Main extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(intent, "Select a photo"),
                     GALLERY_IMAGE_REQUEST);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     public void startCamera() {

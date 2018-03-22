@@ -1,8 +1,10 @@
 package com.expenditrack.expenditrack;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,7 +17,15 @@ public class viewGraphs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_graphs);
 
-   }
+        Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+
+    }
 
 
     public void viewPieCharts(View view){

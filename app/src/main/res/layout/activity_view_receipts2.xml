@@ -5,31 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
     android:scrollbars="none">
+    <!--android:paddingBottom="16dp"-->
+    <!--android:paddingLeft="16dp"-->
+    <!--android:paddingRight="16dp"-->
+    <!--android:paddingTop="16dp"-->
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+        android:id="@+id/viewReceiptsToolbar"
+        android:layout_width="match_parent"
+            android:elevation="4dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
 
     </android.support.design.widget.AppBarLayout>
-
-    <TextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Filter Title"
-        android:textAlignment="center" />
 
     <!-- Spinner From: https://developer.android.com/guide/topics/ui/controls/spinner.html
          This menu will be used to filter car dealers by location i.e. South/North Dublin etc -->
@@ -41,19 +37,22 @@
     <!--</Spinner>-->
 
     <EditText
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/searchReceipts"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="20dp"
         android:hint="Search" />
 
-    <!-- ListView Styling From: https://stackoverflow.com/questions/1914477/how-do-i-remove-lines-between-listviews-on-android -->
     <ListView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/receiptsListView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"></ListView>
+        android:dividerHeight="0dp"/>
 
 
 </LinearLayout>

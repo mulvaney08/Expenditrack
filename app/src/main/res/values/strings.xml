@@ -2,13 +2,6 @@
     <string name="app_name">Expenditrack</string>
     <string name="hw">Hello World</string>
 
-    <!--Dealers Adapter Layout -->
-
-    <string name="dealers_adapter_email">Email</string>
-
-    <!--Repair Shops Adapter Layout -->
-    <string name="repair_shops_adapter_email">Email</string>
-
     <!--Username Spinner Content -->
     <string-array name="receipts_filter_array">
         <item>All</item>
@@ -33,6 +26,7 @@
         <item>Baby Care</item>
         <item>Alcohol</item>
         <item>Pet Food/Supplies</item>
+        <item>Other</item>
     </string-array>
     <string name="title_activity_view_pie_charts">view_pie_charts</string>
 </resources>
