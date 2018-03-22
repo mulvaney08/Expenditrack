@@ -1,58 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_view_receipts2"
+
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="none">
-    <!--android:paddingBottom="16dp"-->
-    <!--android:paddingLeft="16dp"-->
-    <!--android:paddingRight="16dp"-->
-    <!--android:paddingTop="16dp"-->
+    android:fitsSystemWindows="true">
 
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_view_receipts2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
-
-        <android.support.v7.widget.Toolbar
-        android:id="@+id/viewReceiptsToolbar"
-        android:layout_width="match_parent"
-            android:elevation="4dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <!-- Spinner From: https://developer.android.com/guide/topics/ui/controls/spinner.html
-         This menu will be used to filter car dealers by location i.e. South/North Dublin etc -->
-    <!--<Spinner-->
-    <!--android:id="@+id/receiptsFilterSpinner"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:layout_marginBottom="20dp">-->
-    <!--</Spinner>-->
-
-    <EditText
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/searchReceipts"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
-        android:hint="Search" />
-
-    <ListView
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/receiptsListView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="none">
+        <!--android:paddingBottom="16dp"-->
+        <!--android:paddingLeft="16dp"-->
+        <!--android:paddingRight="16dp"-->
+        <!--android:paddingTop="16dp"-->
 
 
-</LinearLayout>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/viewReceiptsToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="4dp" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <!-- Spinner From: https://developer.android.com/guide/topics/ui/controls/spinner.html
+             This menu will be used to filter car dealers by location i.e. South/North Dublin etc -->
+        <!--<Spinner-->
+        <!--android:id="@+id/receiptsFilterSpinner"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginBottom="20dp">-->
+        <!--</Spinner>-->
+
+        <EditText
+            android:id="@+id/searchReceipts"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Search" />
+
+        <ListView
+            android:id="@+id/receiptsListView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp" />
+
+
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

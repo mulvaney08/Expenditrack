@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_view_category_pie"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_view_category_pie"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.expenditrack.expenditrack.view_pie_charts">
@@ -17,42 +17,42 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/viewReceiptsToolbar"
             android:layout_width="match_parent"
-            android:elevation="4dp"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp" />
 
     </android.support.design.widget.AppBarLayout>
 
     <com.androidplot.pie.PieChart
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="200dp"
         android:id="@+id/mySimplePieChart"
+        androidPlot.title.labelPaint.textSize="@dimen/title_font_size"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
-        androidPlot.title.labelPaint.textSize="@dimen/title_font_size"/>
+        android:layout_marginBottom="200dp"
+        android:layout_marginTop="150dp"
+        android:layout_weight="1" />
+
     <LinearLayout
-        android:layout_marginTop="100dp"
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="100dp"
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="75dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
             android:text="Top 4 Categories"
             android:textAlignment="center"
-            android:textSize="30sp"/>
+            android:textSize="30sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="For Boots"
             android:textAlignment="center"
-            android:textSize="25sp"/>
-
+            android:textSize="25sp" />
 
 
         <!--<TextView-->

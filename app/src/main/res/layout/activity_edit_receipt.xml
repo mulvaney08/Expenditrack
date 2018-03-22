@@ -15,9 +15,9 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/viewReceiptsToolbar"
             android:layout_width="match_parent"
-            android:elevation="4dp"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -26,23 +26,22 @@
         android:id="@+id/activity_view_receipts2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="75dp"
+        android:orientation="vertical"
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        android:orientation="vertical"
-        android:scrollbars="none"
-        android:layout_marginTop="75dp"
-        >
+        android:scrollbars="none">
 
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAlignment="center"
             android:text="Manage Receipt"
-            android:textSize="22dp"
-            android:textColor="@color/colorPrimary"/>
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -50,66 +49,66 @@
             android:layout_marginTop="25dp">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:id="@+id/center_point"
                 android:layout_width="200dp"
                 android:layout_height="0dp"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:orientation="horizontal" />
 
             <LinearLayout
-                android:orientation="vertical"
                 android:id="@+id/left_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignRight="@+id/center_point"
+                android:orientation="vertical"
                 android:paddingLeft="15dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/rc_shop"/>
+                    android:src="@mipmap/rc_shop"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/rc_date"/>
+                    android:src="@mipmap/rc_date"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/rc_price"/>
+                    android:src="@mipmap/rc_price"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/rc_user"/>
+                    android:src="@mipmap/rc_user"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/rc_category"/>
+                    android:src="@mipmap/rc_category"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
 
             <LinearLayout
                 android:id="@+id/right_layout"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:layout_alignLeft="@+id/center_point"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
                 >
@@ -118,23 +117,22 @@
                     android:id="@+id/supplier_name_field"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:hint="Supplier"
                     android:layout_marginTop="10dp"
-                    />
+                    android:hint="Supplier"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/showDate"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:hint="Date of Purchase"
-                    android:layout_marginTop="20dp"
-                    android:onClick="setDate"
-                    android:inputType="none"
                     android:layout_marginLeft="3dp"
+                    android:layout_marginTop="20dp"
+                    android:hint="Date of Purchase"
+                    android:inputType="none"
+                    android:onClick="setDate"
                     android:textColor="#000000"
-                    />
+                    android:textSize="20sp" />
+
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
@@ -146,25 +144,24 @@
                     android:id="@+id/total_spent_field"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:hint="Total Spent"
                     android:layout_marginTop="20dp"
-                    />
+                    android:hint="Total Spent"
+                    android:textSize="20sp" />
+
                 <EditText
                     android:id="@+id/buyer_name_field"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:hint="Buyer"
                     android:layout_marginTop="10dp"
-                    />
+                    android:hint="Buyer"
+                    android:textSize="20sp" />
+
                 <Spinner
                     android:id="@+id/categorySpinner"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="15dp"
-                    android:hint="Category">
-                </Spinner>
+                    android:hint="Category"></Spinner>
 
             </LinearLayout>
         </RelativeLayout>
@@ -174,11 +171,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:background="@color/colorPrimary"
             android:text="Confirm"
             android:textAllCaps="false"
-            android:background="@color/colorPrimary"
-            android:textColor="#ffffff"
-            android:layout_marginRight="15dp"/>
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

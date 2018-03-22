@@ -72,15 +72,14 @@ import java.lang.*;
 
 /**
  * Created by Aaron on 23/10/2017.
- *
+ * <p>
  * Reference to project developed by Fung LAM
  * Fung LAM, Cloud-Vision, (), Github repository, https://github.com/GoogleCloudPlatform/cloud-vision.git
- *
  */
 public class Main extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-    private String username = "aaron";
+    private String username = "Aaron";
 
     private Uri file;
     public String filePath = "";
@@ -90,10 +89,11 @@ public class Main extends AppCompatActivity {
     private File currentImage;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReference().child("Aaron/Receipts/"+FILE_NAME);
+    StorageReference storageRef = storage.getReference().child("Aaron/Receipts/" + FILE_NAME);
 
     String message = "";
     private String supplier = "";
+    private String category = "";
     String apiResponse = "\n\nThis is what we found:\n\n";
     String totalAmount = "";
     String cardAmount = "";
@@ -115,6 +115,7 @@ public class Main extends AppCompatActivity {
 
     private TextView mImageDetails;
 
+
     private ImageView mMainImage;
 
 
@@ -122,7 +123,7 @@ public class Main extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
-    public void uploadToFBase(File image){
+    public void uploadToFBase(File image) {
         Uri file = Uri.fromFile(image);
         UploadTask uploadTask = storageRef.putFile(file);
 
@@ -151,6 +152,7 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             // do your stuff
@@ -177,9 +179,12 @@ public class Main extends AppCompatActivity {
 //        });
 
         setContentView(R.layout.activity_main);
+
+        TextView userWelcome = findViewById(R.id.userWelcome);
+        userWelcome.setText(username);
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        final Intent viewReceiptsIntent = new Intent(this,viewReceipts.class);
-        final Intent viewGraphsIntent = new Intent(this,viewGraphs.class);
+        final Intent viewReceiptsIntent = new Intent(this, viewReceipts.class);
+        final Intent viewGraphsIntent = new Intent(this, viewGraphs.class);
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -191,11 +196,10 @@ public class Main extends AppCompatActivity {
                         // set item as selected to persist highlight
                         // close drawer when item is tapped
 
-                        if(menuItem.getItemId() == R.id.viewReceipts){
+                        if (menuItem.getItemId() == R.id.viewReceipts) {
                             menuItem.setChecked(true);
                             startActivity(viewReceiptsIntent);
-                        }
-                        else if(menuItem.getItemId() == R.id.viewGraphs){
+                        } else if (menuItem.getItemId() == R.id.viewGraphs) {
                             menuItem.setChecked(true);
                             startActivity(viewGraphsIntent);
                         }
@@ -213,7 +217,6 @@ public class Main extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -254,34 +257,37 @@ public class Main extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void signInAnonymously(){
+    private void signInAnonymously() {
         mAuth.signInAnonymously().addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
-            @Override public void onSuccess(AuthResult authResult) {
+            @Override
+            public void onSuccess(AuthResult authResult) {
                 // do your stuff
             }
-        }) .addOnFailureListener(this, new OnFailureListener() {
-            @Override public void onFailure(@NonNull Exception exception) {
+        }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
                 Log.e("TAG", "signInAnonymously:FAILURE", exception);
             }
         });
     }
 
-    public void viewReceiptsActivity(View view){
-        Intent intent = new Intent(this,viewReceipts.class);
-        startActivity(intent);
-    }
-    public void editReceiptActivity(View view){
-        Intent intent = new Intent(this,editReceipt.class);
+    public void viewReceiptsActivity(View view) {
+        Intent intent = new Intent(this, viewReceipts.class);
         startActivity(intent);
     }
 
-    public void viewGraphs(View view){
-        Intent intent = new Intent(this,viewGraphs.class);
+    public void editReceiptActivity(View view) {
+        Intent intent = new Intent(this, editReceipt.class);
         startActivity(intent);
     }
 
-    public void confirmReceiptActivity(View view){
-        Intent intent = new Intent(this,ConfirmReceipt.class);
+    public void viewGraphs(View view) {
+        Intent intent = new Intent(this, viewGraphs.class);
+        startActivity(intent);
+    }
+
+    public void confirmReceiptActivity(View view) {
+        Intent intent = new Intent(this, ConfirmReceipt.class);
         startActivity(intent);
     }
 
@@ -452,7 +458,6 @@ public class Main extends AppCompatActivity {
                     return convertResponseToString(response);
 
 
-
                 } catch (GoogleJsonResponseException e) {
                     Log.d(TAG, "failed to make API request because " + e.getContent());
                 } catch (IOException e) {
@@ -503,13 +508,15 @@ public class Main extends AppCompatActivity {
             //Check if response is null
             for (EntityAnnotation words : text) {
                 //Loop through words in response
-                apiResponse += String.format(Locale.ENGLISH, words.getDescription());
+//                apiResponse += String.format(Locale.ENGLISH, words.getDescription());
+                apiResponse += words.getDescription();
+
                 apiResponse += "\n";
                 //Start Powercity example, testing on Powercity receipt -----------------------------------------------------------------------------------------------------------------
                 if (words.getDescription().contains("POWERCITY")) {
                     //If the receipt contains POWERCITY then set the shop name to be POWERCITY
                     supplier = "POWERCITY";
-
+                    category = "Electronics";
                     //Handling different variations of how the api extracts the line containing Card
                     //Variation 1 card captured with colon afterwards Card:
                     if (words.getDescription().contains("Card:")) {
@@ -525,8 +532,7 @@ public class Main extends AppCompatActivity {
                         //Call method to check if the string value in tempString can be parsed to double to ensure the storage of random strings does not occur.
                         if (checkIfDouble(tempString)) {
                             totalAmount = tempString;
-                        }
-                        else {
+                        } else {
                             totalAmount = "0";
                         }
                     }
@@ -544,8 +550,7 @@ public class Main extends AppCompatActivity {
                         //Call method to check if the string value in tempString can be parsed to double to ensure the storage of random strings does not occur.
                         if (checkIfDouble(tempString)) {
                             totalAmount = tempString;
-                        }
-                        else {
+                        } else {
                             totalAmount = "0";
                         }
                     }
@@ -563,16 +568,19 @@ public class Main extends AppCompatActivity {
                         //Call method to check if the string value in tempString can be parsed to double to ensure the storage of random strings does not occur.
                         if (checkIfDouble(tempString)) {
                             totalAmount = tempString;
-                        }
-                        else {
+                        } else {
                             totalAmount = "0";
                         }
                     }
-                } else if (words.getDescription().contains("copan") || words.getDescription().contains("COPAN")){
+                }
+                //End Powercity example, testing on Powercity receipt -----------------------------------------------------------------------------------------------------------
+                //Start Copan example, testing on Copan receipt -----------------------------------------------------------------------------------------------------------------
+                else if (words.getDescription().contains("copan") || words.getDescription().contains("COPAN") || words.getDescription().contains("Copan")) {
 
                     supplier = "Copan Limited";
                     int indexOfDecimal = 0;
                     int indexOfEndOfDecimal = 0;
+                    category = "Alcohol";
 
                     //tempString = words.getDescription().substring(words.getDescription().indexOf("TOTAL") - 6, words.getDescription().indexOf("TOTAL") - 5);
 
@@ -588,45 +596,59 @@ public class Main extends AppCompatActivity {
                         totalAmount = words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal);
 
                     }
-                    // }
-//                  else if (!checkIfInt(words.getDescription().substring(words.getDescription().indexOf("TOTAL") - 6, words.getDescription().indexOf("TOTAL") - 5))) {
-//                        if (words.getDescription().contains("TOTAL")) {
-//
-//                            indexOfDecimal = words.getDescription().indexOf("TOTAL") - 9;
-//                            indexOfEndOfDecimal = words.getDescription().indexOf("TOTAL") - 5;
-//
-////                                if (checkIfDouble(words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal))) {
-////                                }
-//
-//                            totalAmount = words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal);
-//
-//                        }
-//                      }
-//
                 }
+                //End Copan example, testing on Copan receipt -----------------------------------------------------------------------------------------------------------
+                //Start Subway example, testing on Subway receipt -----------------------------------------------------------------------------------------------------------------
+                else if (words.getDescription().contains("subway") || words.getDescription().contains("Subway") || words.getDescription().contains("SUBWAY")) {
 
-                //End Powercity example, testing on Powercity receipt ---------------------------------------------------------------------------------------------------------------------
+                    supplier = "Subway";
+                    category = "Take-Aways/Restaurants";
+                    String currency = "EUR";
+                    for (int i = 0; i < words.getDescription().lastIndexOf(currency); i++) {
+                        if (words.getDescription().contains(currency)) {
+//                                totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(currency), words.getDescription().lastIndexOf(currency +5));
+                            totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(currency) - 15, words.getDescription().lastIndexOf(currency) - 10);
+                        }
+                    }
+                }
+                //End Subway example, testing on Subway receipt -----------------------------------------------------------------------------------------------------------
+                //Start Halfords example, testing on Halfords receipt -----------------------------------------------------------------------------------------------------------------
 
+                else if (words.getDescription().contains("halfords") || words.getDescription().contains("Halfords") || words.getDescription().contains("HALFORDS")) {
 
+                    supplier = "Halfords";
+                    category = "Other";
+                    String currency = "EUR";
+                    for (int i = 0; i < words.getDescription().lastIndexOf(currency); i++) {
+                        if (words.getDescription().contains(currency)) {
+//                                totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(currency), words.getDescription().lastIndexOf(currency +5));
+                            totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(currency) - 5, words.getDescription().lastIndexOf(currency) - 10);
+                        }
+                    }
+                }
+                //End Halfords example, testing on Halfords receipt -----------------------------------------------------------------------------------------------------------
+                //Start - example, testing on - receipt -----------------------------------------------------------------------------------------------------------------
             }
-        }else {
+        } else {
 
             message += "nothing";
         }
 
-        message += "Shop Name: " + supplier + "\nTotal spent: " +totalAmount +"\nTime: "+timeStamp;
-        //return message +apiResponse;
+        message += "Shop Name: " + supplier + "\nTotal spent: " + totalAmount + "\nTime: " + timeStamp;
 
-        callConfirmReceipt(supplier,totalAmount);
 
-        return message;
+        //callConfirmReceipt(supplier,totalAmount);
+
+        return message + apiResponse;
+        //return message;
 
     }
 
-    public Intent pushValuesToReceipt(Intent intent, String supplierName, String totalAmount){
+    public Intent pushValuesToReceipt(Intent intent, String supplierName, String totalAmount, String category) {
         intent.putExtra("Supplier", supplierName);
         intent.putExtra("Total", totalAmount);
         intent.putExtra("Buyer", username);
+        intent.putExtra("Category", category);
 
         return intent;
     }
@@ -637,21 +659,22 @@ public class Main extends AppCompatActivity {
 //        startActivity(pushValuesToReceipt(intent,supplierName,totalAmount));
 //    }
 
-    public void callConfirmReceipt(String supplierName, String totalAmount){
-        Intent intent = new Intent(this,ConfirmReceipt.class);
-        startActivity(pushValuesToReceipt(intent,supplierName,totalAmount));
+    public void callConfirmReceipt(String supplierName, String totalAmount) {
+        Intent intent = new Intent(this, ConfirmReceipt.class);
+        startActivity(pushValuesToReceipt(intent, supplierName, totalAmount, category));
     }
 
-    boolean checkIfDouble(String stringIn){
-        try{
+    boolean checkIfDouble(String stringIn) {
+        try {
             Double.parseDouble(stringIn);
             return true;
         } catch (NumberFormatException e) {
             return false;
         }
     }
-    boolean checkIfInt(String stringIn){
-        try{
+
+    boolean checkIfInt(String stringIn) {
+        try {
             Integer.parseInt(stringIn);
             return true;
         } catch (NumberFormatException e) {

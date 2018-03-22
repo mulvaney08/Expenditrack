@@ -48,11 +48,12 @@ public class ConfirmReceipt extends AppCompatActivity {
         supplier = myIntent.getStringExtra("Supplier");
         total = myIntent.getStringExtra("Total");
         buyer = myIntent.getStringExtra("Buyer");
+        category = myIntent.getStringExtra("Category");
 
 
-        final TextView supplierName = (TextView)findViewById(R.id.supplier_name_field_confirm);
-        final TextView totalSpent = (TextView)findViewById(R.id.total_spent_field_confirm);
-        final TextView buyerView = (TextView)findViewById(R.id.buyer_name_field_confirm);
+        final TextView supplierName = findViewById(R.id.supplier_name_field_confirm);
+        final TextView totalSpent = findViewById(R.id.total_spent_field_confirm);
+        final TextView buyerView = findViewById(R.id.buyer_name_field_confirm);
 
         supplierName.setText(supplier);
         totalSpent.setText(total);
@@ -64,7 +65,7 @@ public class ConfirmReceipt extends AppCompatActivity {
 
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month+1, day);
+        showDate(year, month + 1, day);
 
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
@@ -74,18 +75,23 @@ public class ConfirmReceipt extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
-        final Spinner spinner  = (Spinner) findViewById(R.id.categorySpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.category_array, R.layout.category_spinner_item);
+        final Spinner spinner = (Spinner) findViewById(R.id.categorySpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_array, R.layout.category_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        //spinner.setOnItemSelectedListener();
 
-        confirm = (Button)findViewById(R.id.confirmReceipt);
+        for (int i = 0; i < 17; i++) {
+            if (spinner.getAdapter().getItem(i).toString().contains(category)) {
+                spinner.setSelection(i);
+            }
+        }
+
+        confirm = (Button) findViewById(R.id.confirmReceipt);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                receipt = new Receipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString(), spinner.getSelectedItem().toString());
+                receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString());
                 writeNewReceipt(receipt);
                 viewReceipts();
             }
@@ -93,12 +99,12 @@ public class ConfirmReceipt extends AppCompatActivity {
 
     }
 
-    private void viewReceipts(){
+    private void viewReceipts() {
         Intent viewReceipt = new Intent(this, viewReceipts.class);
         startActivity(viewReceipt);
     }
 
-    private void writeNewReceipt(Receipt r){
+    private void writeNewReceipt(Receipt r) {
         //id = Utils.generateRandomID();
         Utils.writeReceipt(r);
     }
@@ -131,7 +137,7 @@ public class ConfirmReceipt extends AppCompatActivity {
                     // arg1 = year
                     // arg2 = month
                     // arg3 = day
-                    showDate(arg1, arg2+1, arg3);
+                    showDate(arg1, arg2 + 1, arg3);
                 }
             };
 
