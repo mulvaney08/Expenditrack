@@ -38,23 +38,23 @@
 
         <activity
             android:name=".viewReceipts"
-            android:parentActivityName=".Main">
-        </activity>
-        <activity android:name=".editReceipt"
-            android:parentActivityName=".viewReceipts">
-        </activity>
-        <activity android:name=".ConfirmReceipt"
-            android:parentActivityName=".Main">
-        </activity>
-        <activity android:name=".viewGraphs"
-            android:parentActivityName=".Main">
-        </activity>
-        <activity android:name=".view_pie_charts"
-            android:parentActivityName=".viewGraphs">
-        </activity>
-        <activity android:name=".view_category_pie"
-            android:parentActivityName=".view_pie_charts">
-        </activity>
+            android:parentActivityName=".Main"></activity>
+        <activity
+            android:name=".editReceipt"
+            android:parentActivityName=".viewReceipts"></activity>
+        <activity
+            android:name=".ConfirmReceipt"
+            android:parentActivityName=".Main"></activity>
+        <activity
+            android:name=".viewGraphs"
+            android:parentActivityName=".Main"></activity>
+        <activity
+            android:name=".view_pie_charts"
+            android:parentActivityName=".viewGraphs"></activity>
+        <activity
+            android:name=".view_category_pie"
+            android:parentActivityName=".view_pie_charts"></activity>
+        <activity android:name=".addAlert"></activity>
     </application>
 
 </manifest>

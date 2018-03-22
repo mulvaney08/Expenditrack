@@ -218,6 +218,7 @@ public class Main extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        final Intent addAlertIntent = new Intent(this, addAlert.class);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +226,7 @@ public class Main extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
                 builder
-                        .setMessage("Select an image")
+                        .setMessage("Choose an action")
                         .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -237,7 +238,15 @@ public class Main extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 startCamera();
                             }
+                        })
+                        .setNeutralButton("Add Alert", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(addAlertIntent);
+                            }
+
                         });
+
                 builder.create().show();
             }
         });
@@ -269,26 +278,6 @@ public class Main extends AppCompatActivity {
                 Log.e("TAG", "signInAnonymously:FAILURE", exception);
             }
         });
-    }
-
-    public void viewReceiptsActivity(View view) {
-        Intent intent = new Intent(this, viewReceipts.class);
-        startActivity(intent);
-    }
-
-    public void editReceiptActivity(View view) {
-        Intent intent = new Intent(this, editReceipt.class);
-        startActivity(intent);
-    }
-
-    public void viewGraphs(View view) {
-        Intent intent = new Intent(this, viewGraphs.class);
-        startActivity(intent);
-    }
-
-    public void confirmReceiptActivity(View view) {
-        Intent intent = new Intent(this, ConfirmReceipt.class);
-        startActivity(intent);
     }
 
     public void startGalleryChooser() {
