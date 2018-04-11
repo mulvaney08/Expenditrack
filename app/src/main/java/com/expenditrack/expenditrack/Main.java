@@ -2,6 +2,7 @@ package com.expenditrack.expenditrack;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -113,10 +115,14 @@ public class Main extends AppCompatActivity {
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
+    private String speechResponse;
+
     private TextView mImageDetails;
 
 
     private ImageView mMainImage;
+
+    protected static final int RESULT_SPEECH = 5;
 
 
     private DatabaseReference mDatabase;
@@ -162,23 +168,10 @@ public class Main extends AppCompatActivity {
 
         Utils.initialiseFBase();
 
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.d(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-
         setContentView(R.layout.activity_main);
+
+        final Intent speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speech.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
 
         TextView userWelcome = findViewById(R.id.userWelcome);
         userWelcome.setText(username);
@@ -202,7 +195,18 @@ public class Main extends AppCompatActivity {
                         } else if (menuItem.getItemId() == R.id.viewGraphs) {
                             menuItem.setChecked(true);
                             startActivity(viewGraphsIntent);
+                        } else if (menuItem.getItemId() == R.id.speechAdd){
+                            menuItem.setChecked(true);
+                            try {
+                                startActivityForResult(speech, RESULT_SPEECH);
+                            } catch (ActivityNotFoundException a) {
+                                Toast t = Toast.makeText(getApplicationContext(),
+                                        "Opps! Your device doesn't support Speech to Text",
+                                        Toast.LENGTH_SHORT);
+                                t.show();
+                            }
                         }
+
 
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
@@ -326,7 +330,30 @@ public class Main extends AppCompatActivity {
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
             uploadImage(photoUri);
+        } else if (requestCode == RESULT_SPEECH && null != data){
+            ArrayList<String> text = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+            speechResponse = text.get(0);
+            convertSpeech(speechResponse);
         }
+    }
+
+    private void convertSpeech(String speechResponse){
+
+        String supplier = "";
+        String totalAmount = "";
+        String category = "";
+
+        if(speechResponse != null){
+            for (int i = 0; i <= speechResponse.length(); i++){
+                supplier = speechResponse.substring(speechResponse.lastIndexOf(" in ") + 4, speechResponse.length());
+                totalAmount = speechResponse.substring(speechResponse.lastIndexOf("€") + 1, speechResponse.lastIndexOf(" in "));
+            }
+        }
+
+        callConfirmReceipt(supplier,totalAmount);
+
     }
 
     @Override
@@ -626,7 +653,7 @@ public class Main extends AppCompatActivity {
         message += "Shop Name: " + supplier + "\nTotal spent: " + totalAmount + "\nTime: " + timeStamp;
 
 
-        //callConfirmReceipt(supplier,totalAmount);
+        callConfirmReceipt(supplier,totalAmount);
 
         return message + apiResponse;
         //return message;

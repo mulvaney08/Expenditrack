@@ -74,7 +74,7 @@ public class Utils {
         getDatabase();
 
         databaseReference = firebaseDatabase.getReferenceFromUrl("https://expenditrack-184010.firebaseio.com/");
-        receiptRef = databaseReference.child("users").child("aaron").child("receipts");
+        receiptRef = databaseReference.child("users").child("Aaron").child("receipts");
         receiptIDReference = databaseReference.child("receiptIDs");
     }
 

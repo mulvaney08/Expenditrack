@@ -16,5 +16,11 @@
             android:icon="@drawable/ic_pie_chart_black_24dp"
             android:title="View Graphs"
             />
+        <item
+            android:id="@+id/speechAdd"
+            android:icon="@drawable/ic_mic_black_24dp"
+            android:title="Add Receipt(Voice)"
+            />
+
     </group>
 </menu>

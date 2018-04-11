@@ -15,15 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "126159236900-bai81js4v8pjpab2uha3ni7ip0se17io.apps.googleusercontent.com",
+          "client_id": "126159236900-v9m1g5ruc3f7kas6nl6tki0c9m7rq5c3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.expenditrack.expenditrack",
-            "certificate_hash": "95db4f987ca44df483857d1ad8449532796977c2"
+            "certificate_hash": "d1e2fdf38f7ca00be45b54410d5db2f35e9180b1"
           }
         },
         {
-          "client_id": "126159236900-la6hj8rsn0pkoko1g28b1b6klnodbbtm.apps.googleusercontent.com",
+          "client_id": "126159236900-g2h9cc3olus53btopom29mi0mie2dqm9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.expenditrack.expenditrack",
@@ -31,7 +31,23 @@
           }
         },
         {
-          "client_id": "126159236900-u9j392bd57rh1fqskd5ppj89nii0bs3o.apps.googleusercontent.com",
+          "client_id": "126159236900-npjf82u6f80muh561robv2gjo3c27n54.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.expenditrack.expenditrack",
+            "certificate_hash": "95db4f987ca44df483857d1ad8449532796977c2"
+          }
+        },
+        {
+          "client_id": "126159236900-lhr52hejlo4l2rngr1qul9r7hobq2qgr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.expenditrack.expenditrack",
+            "certificate_hash": "983ae4d53dc57d3f10cf8bde14970ad82d3e441a"
+          }
+        },
+        {
+          "client_id": "126159236900-g9j2eql513cnsjvsfcjrqlbeuos4lt84.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -48,7 +64,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "126159236900-u9j392bd57rh1fqskd5ppj89nii0bs3o.apps.googleusercontent.com",
+              "client_id": "126159236900-g9j2eql513cnsjvsfcjrqlbeuos4lt84.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
