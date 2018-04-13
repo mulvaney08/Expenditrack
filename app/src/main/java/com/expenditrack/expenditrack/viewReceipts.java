@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,19 +55,19 @@ public class viewReceipts extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_view_receipts);
         setContentView(R.layout.activity_view_receipts2);
 
-        //Add back button
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        try {
+//            Utils.loadReceipts();
+//        } catch (Exception e) {
+//            Toast.makeText(this, "Cannot load receipts", Toast.LENGTH_SHORT).show();
+//        }
 
-        receiptList = new ArrayList<>();
+        receiptList = Utils.receipts;
         adapter = new ReceiptAdapter(this, receiptList);
 
-        //Firebase - Setup & Paths Target specific sections of Firebase - First target the actual DB, then the specified table "Dealers"
+        receiptsListView = findViewById(R.id.receiptsListView);
 
-
-        receiptsListView = (ListView) findViewById(R.id.receiptsListView);
 
         //Spinner
         //Spinner spinner  = (Spinner) findViewById(R.id.receiptsFilterSpinner);
@@ -92,134 +93,88 @@ public class viewReceipts extends AppCompatActivity {
                 it.putExtra("Supplier", receiptList.get(position).getSupplierName());
                 it.putExtra("Total", receiptList.get(position).getTotalSpent());
                 it.putExtra("Buyer", receiptList.get(position).getUsername());
-                it.putExtra("ID",receiptList.get(position).getId());
+                it.putExtra("ID", receiptList.get(position).getId());
 
-                if(listIsFiltered == false){
+                if (listIsFiltered == false) {
                     Receipt item = receiptList.get(position);
-                }
-
-                else {
+                } else {
                     Receipt item = filterList.get(position);
                 }
 
                 startActivity(it);
             }
         });
-       getContents();
-       search = (EditText) findViewById(R.id.searchReceipts);
-       search.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-           }
+        getContents();
+        search = findViewById(R.id.searchReceipts);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-           @Override
-           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 filter();
-           }
+            }
 
-           @Override
-           public void afterTextChanged(Editable editable) {
+            @Override
+            public void afterTextChanged(Editable editable) {
 
-           }
-       });
+            }
+        });
 //       filter();
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
-    public void getContents(){
-        //Get contents from Firebase into String From : https://www.youtube.com/watch?v=WDGmpvKpHyw
-        Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() { //SingleValueEvent Listener to prevent the append method causing duplicate entries
-
-            @Override
-            public void onDataChange (DataSnapshot dataSnapshot){
-                receiptList.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String supplierName = ds.child("supplierName").getValue().toString();
-                    String timeStamp = ds.child("timeStamp").getValue().toString();
-                    String totalSpent = "€" + ds.child("totalSpent").getValue().toString();
-                    String username = ds.child("username").getValue().toString();
-//                    String id = ds.getValue().toString();
-                    String category = ds.child("category").getValue().toString();
-
-
-                      Receipt newReceipt = new Receipt(username, supplierName, totalSpent, timeStamp, category);
-                      receiptList.add(newReceipt);
-                }
-                receiptsListView.setAdapter(null);
-                receiptsListView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled (DatabaseError databaseError){
-
-            }
-        });
-        Snackbar receiptsLoaded = Snackbar.make(findViewById(R.id.activity_view_receipts2), "Receipts Loaded", Snackbar.LENGTH_LONG);
-        receiptsLoaded.show();
-        //Toast.makeText(this,"Receipts Loaded",Toast.LENGTH_SHORT).show();
-
+    @Override
+    public void onResume() {
+        super.onResume();
+//        try{
+//            Utils.loadReceipts();
+//        } catch (Exception e){
+//            Toast.makeText(this, "Cannot load receipts",Toast.LENGTH_SHORT).show();
+//        }
     }
 
-    public void filter(){
+    public void getContents() {
+
+        receiptsListView.setAdapter(null);
+        receiptsListView.setAdapter(adapter);
+
+        Snackbar receiptsLoaded = Snackbar.make(findViewById(R.id.activity_view_receipts2), "Receipts Loaded", Snackbar.LENGTH_LONG);
+        receiptsLoaded.show();
+    }
+
+    public void filter() {
         filterList = new ArrayList<>();
         final ReceiptAdapter filterAdapter = new ReceiptAdapter(this, filterList);
 
-                String searchText = search.getText().toString();
-                Log.d("Search Query:" , searchText);
-                filterList.clear();
-                for (int j = 0; j < receiptList.size();j++){
-                    if(receiptList.get(j).getSupplierName().toLowerCase().contains(searchText.toLowerCase()) ||
-                            receiptList.get(j).getUsername().toLowerCase().contains(searchText.toLowerCase()) ||
-                            receiptList.get(j).getTimeStamp().toLowerCase().contains(searchText.toLowerCase()) ||
-                            receiptList.get(j).getCategory().toLowerCase().contains(searchText.toLowerCase()) ||
-                            receiptList.get(j).getTotalSpent().contains(searchText)){
-                        Receipt newReceipt = (receiptList.get(j));
-                        filterList.add(newReceipt);
-                        Log.d("Test", receiptList.get(j).getSupplierName());
-                    }
-                    else {
+        String searchText = search.getText().toString();
+        Log.d("Search Query:", searchText);
+        filterList.clear();
+        for (int j = 0; j < receiptList.size(); j++) {
+            if (receiptList.get(j).getSupplierName().toLowerCase().contains(searchText.toLowerCase()) ||
+                    receiptList.get(j).getUsername().toLowerCase().contains(searchText.toLowerCase()) ||
+                    receiptList.get(j).getTimeStamp().toLowerCase().contains(searchText.toLowerCase()) ||
+                    receiptList.get(j).getCategory().toLowerCase().contains(searchText.toLowerCase()) ||
+                    receiptList.get(j).getTotalSpent().contains(searchText)) {
+                Receipt newReceipt = (receiptList.get(j));
+                filterList.add(newReceipt);
+                Log.d("Test", receiptList.get(j).getSupplierName());
+            } else {
 
-                    }
-                }
+            }
+        }
 
         receiptsListView.setAdapter(null);
         receiptsListView.setAdapter(filterAdapter);
 
     }
-
-
-
-//    //Spinner
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
-//        if(parent.getSelectedItemPosition() == 0){
-//            spinnerLocation = 0;
-//            listIsFiltered = false;
-//            getContents();
-//        }
-//
-//        if(parent.getSelectedItemPosition() == 1){
-//            spinnerLocation = 1;
-//            listIsFiltered = true;
-//            filter();
-//        }
-//
-//        if(parent.getSelectedItemPosition() == 2){
-//            spinnerLocation = 2;
-//            listIsFiltered = true;
-//            filter();
-//        }
-//    }
-
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//
-//    }
 
 }

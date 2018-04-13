@@ -148,9 +148,6 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
         setContentView(R.layout.activity_main);
 
         final Intent speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -161,6 +158,11 @@ public class Main extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         final Intent viewReceiptsIntent = new Intent(this, viewReceipts.class);
         final Intent viewGraphsIntent = new Intent(this, viewGraphs.class);
+        try{
+            Utils.loadReceipts();
+        } catch (Exception e){
+            Toast.makeText(this, "Cannot load receipts",Toast.LENGTH_SHORT).show();
+        }
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -175,6 +177,7 @@ public class Main extends AppCompatActivity {
                         if (menuItem.getItemId() == R.id.viewReceipts) {
                             menuItem.setChecked(true);
                             startActivity(viewReceiptsIntent);
+                            Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
                         } else if (menuItem.getItemId() == R.id.viewGraphs) {
                             menuItem.setChecked(true);
                             startActivity(viewGraphsIntent);

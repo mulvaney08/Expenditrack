@@ -6,8 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,6 +29,8 @@ public class SplashScreen extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    ProgressBar loading;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ public class SplashScreen extends AppCompatActivity {
         }
 
         Utils.loadUserInfo();
+
+        loading = findViewById(R.id.loading_reg);
 
         image = findViewById(R.id.loadImage);
 
@@ -68,10 +74,11 @@ public class SplashScreen extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                loading.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
-                // If you just use this that is not a valid context. Use ActivityName.this
+                loading.setVisibility(View.GONE);
                 startActivity(intent);
             }
-        }, 1000);
+        }, 3000);
     }
 }

@@ -38,7 +38,8 @@
 
         <activity
             android:name=".viewReceipts"
-            android:parentActivityName=".Main" />
+            android:parentActivityName=".Main"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".editReceipt"
             android:parentActivityName=".viewReceipts" />

@@ -48,6 +48,11 @@ public class Utils {
     static ArrayList<String> secAnswers = new ArrayList<>();
     static ArrayList<String> secQs = new ArrayList<>();
     static ArrayList<String> pWords = new ArrayList<>();
+    static ArrayList<Receipt> receipts = new ArrayList<>();
+
+    static Receipt r1 = new Receipt();
+    ;
+
     //public static String updateKey = receiptRef.child().getKey();
 
 
@@ -100,6 +105,33 @@ public class Utils {
         }
     }
 
+    public static void loadReceipts(){
+        try {
+            Utils.initialiseFBase(LoginActivity.username);
+            Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        r1 = new Receipt();
+                        r1.setUsername(ds.child("username").getValue().toString());
+                        r1.setSupplierName(ds.child("supplierName").getValue().toString());
+                        r1.setTotalSpent(ds.child("totalSpent").getValue().toString());
+                        r1.setTimeStamp(ds.child("timeStamp").getValue().toString());
+                        r1.setCategory(ds.child("category").getValue().toString());
+                        r1.setId(ds.child("id").getValue().toString());
+                        receipts.add(r1);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } catch (Exception e) {
+        }
+    }
+
     private static String signatureDigest(Signature sig) {
         byte[] signature = sig.toByteArray();
         try {
@@ -127,7 +159,11 @@ public class Utils {
     }
 
     public static void writeReceipt(Receipt r) {
-        receiptRef.child(r.getId()).setValue(r);
+        try {
+            receiptRef.child(r.getId()).setValue(r);
+        }catch (Exception e){
+
+        }
     }
 
     public static void writeUser(User u) {

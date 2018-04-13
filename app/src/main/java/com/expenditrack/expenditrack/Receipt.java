@@ -22,6 +22,10 @@ public class Receipt {
     protected String category;
     protected String id;
 
+
+    public Receipt() {
+    }
+
     public Receipt(String username, String supplierName, String totalSpent, String timeStamp, String category) {
         this.username = username;
         this.supplierName = supplierName;
@@ -51,29 +55,33 @@ public class Receipt {
         return category;
     }
 
-    public String getTimeStamp(){
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    //    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public void setSupplierName(String supplierName) {
-//        this.supplierName = supplierName;
-//    }
-//
-//    public void setTotalSpent(String totalSpent) {
-//        this.totalSpent = totalSpent;
-//    }
-//
-//    public String getTimeStamp() {
-//        return timeStamp;
-//    }
-//
-//    public void setTimeStamp(String timeStamp) {
-//        this.timeStamp = timeStamp;
-//    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public void setTotalSpent(String totalSpent) {
+        this.totalSpent = totalSpent;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Exclude
     public Map<String, Object> toMap() {

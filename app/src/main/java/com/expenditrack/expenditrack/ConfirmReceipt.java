@@ -3,6 +3,7 @@ package com.expenditrack.expenditrack;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,8 @@ public class ConfirmReceipt extends AppCompatActivity {
     String category;
     Receipt receipt;
 
+    ProgressBar loading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,8 @@ public class ConfirmReceipt extends AppCompatActivity {
         final TextView supplierName = findViewById(R.id.supplier_name_field_confirm);
         final TextView totalSpent = findViewById(R.id.total_spent_field_confirm);
         final TextView buyerView = findViewById(R.id.buyer_name_field_confirm);
+        loading = findViewById(R.id.loading_reg);
+        loading.setVisibility(View.GONE);
 
         supplierName.setText(supplier);
         totalSpent.setText(total);
@@ -93,15 +99,24 @@ public class ConfirmReceipt extends AppCompatActivity {
             public void onClick(View view) {
                 receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString());
                 writeNewReceipt(receipt);
-                viewReceipts();
+                Utils.receipts.clear();
+
+                Utils.loadReceipts();
+                Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
+                loading.setVisibility(View.VISIBLE);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(ConfirmReceipt.this, viewReceipts.class);
+                        loading.setVisibility(View.GONE);
+                        Toast.makeText(ConfirmReceipt.this, getString(R.string.user_add_success), Toast.LENGTH_SHORT);
+                        startActivity(intent);
+                    }
+                }, 3000);
             }
         });
 
-    }
-
-    private void viewReceipts() {
-        Intent viewReceipt = new Intent(this, viewReceipts.class);
-        startActivity(viewReceipt);
     }
 
     private void writeNewReceipt(Receipt r) {
