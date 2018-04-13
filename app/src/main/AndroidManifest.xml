@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/expenditrackicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,23 +38,31 @@
 
         <activity
             android:name=".viewReceipts"
-            android:parentActivityName=".Main"></activity>
+            android:parentActivityName=".Main" />
         <activity
             android:name=".editReceipt"
-            android:parentActivityName=".viewReceipts"></activity>
+            android:parentActivityName=".viewReceipts" />
         <activity
             android:name=".ConfirmReceipt"
-            android:parentActivityName=".Main"></activity>
+            android:parentActivityName=".Main" />
         <activity
             android:name=".viewGraphs"
-            android:parentActivityName=".Main"></activity>
+            android:parentActivityName=".Main" />
         <activity
             android:name=".view_pie_charts"
-            android:parentActivityName=".viewGraphs"></activity>
+            android:parentActivityName=".viewGraphs" />
         <activity
             android:name=".view_category_pie"
-            android:parentActivityName=".view_pie_charts"></activity>
-        <activity android:name=".addAlert"></activity>
+            android:parentActivityName=".view_pie_charts" />
+        <activity android:name=".addAlert" />
+        <activity
+            android:name=".Main"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity android:name=".ForgotPasswordActivity"
+            android:parentActivityName=".LoginActivity"/>
     </application>
 
 </manifest>

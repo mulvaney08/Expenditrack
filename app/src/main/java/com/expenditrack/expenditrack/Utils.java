@@ -2,10 +2,9 @@ package com.expenditrack.expenditrack;
 
 /**
  * Created by Aaron on 23/10/2017.
- *
+ * <p>
  * Reference to project developed by Fung LAM
  * Fung LAM, Cloud-Vision, (), Github repository, https://github.com/GoogleCloudPlatform/cloud-vision.git
- *
  */
 
 import android.content.pm.PackageInfo;
@@ -34,6 +33,7 @@ public class Utils {
     private static FirebaseDatabase firebaseDatabase;
     private static DatabaseReference databaseReference;
     public static DatabaseReference receiptRef;
+    public static DatabaseReference usersRef;
     public static DatabaseReference receiptIDReference;
     //public static String updateKey = receiptRef.child().getKey();
 
@@ -70,12 +70,14 @@ public class Utils {
         }
     }
 
-    public static void initialiseFBase(){
-        getDatabase();
+    public static void initialiseFBase(String username) {
+        receiptRef = databaseReference.child("users").child(username).child("receipts");
+    }
 
+    public static void setUserReference(){
+        getDatabase();
         databaseReference = firebaseDatabase.getReferenceFromUrl("https://expenditrack-184010.firebaseio.com/");
-        receiptRef = databaseReference.child("users").child("Aaron").child("receipts");
-        receiptIDReference = databaseReference.child("receiptIDs");
+        usersRef = databaseReference.child("Users");
     }
 
     public static FirebaseDatabase getDatabase() {
@@ -83,21 +85,12 @@ public class Utils {
         return firebaseDatabase;
     }
 
-    public static void writeReceipt(Receipt r){
+    public static void writeReceipt(Receipt r) {
         receiptRef.child(r.getId()).setValue(r);
     }
 
-//    public static String generateRandomID(){
-//        uniqueID = UUID.randomUUID().toString();
-//        addReceiptIDToList();
-//        return uniqueID;
-//    }
-//
-//    public static String getID(){
-//        return uniqueID;
-//    }
+    public static void writeUser(User u) {
+        usersRef.child(u.getUsername()).setValue(u);
+    }
 
-//    public static void addReceiptIDToList(){
-//        receiptIDReference.child(getID()).setValue(getID());
-//    }
 }

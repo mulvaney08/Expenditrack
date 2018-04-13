@@ -4,22 +4,22 @@
         <item
             android:id="@+id/home"
             android:icon="@mipmap/ic_home"
-            android:title="Home"
+            android:title="@string/home"
             />
         <item
             android:id="@+id/viewReceipts"
             android:icon="@drawable/ic_view_list_black_24dp"
-            android:title="View Receipts"
+            android:title="@string/view_receipts"
             />
         <item
             android:id="@+id/viewGraphs"
             android:icon="@drawable/ic_pie_chart_black_24dp"
-            android:title="View Graphs"
+            android:title="@string/view_graphs"
             />
         <item
             android:id="@+id/speechAdd"
             android:icon="@drawable/ic_mic_black_24dp"
-            android:title="Add Receipt(Voice)"
+            android:title="@string/add_receipt_voice"
             />
 
     </group>

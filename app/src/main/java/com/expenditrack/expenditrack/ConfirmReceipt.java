@@ -59,7 +59,7 @@ public class ConfirmReceipt extends AppCompatActivity {
         totalSpent.setText(total);
         buyerView.setText(buyer);
 
-        dateView = (TextView) findViewById(R.id.showDate);
+        dateView = findViewById(R.id.showDate);
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
 
@@ -67,7 +67,7 @@ public class ConfirmReceipt extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         showDate(year, month + 1, day);
 
-        Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
+        Toolbar toolbar = findViewById(R.id.confirmToolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionbar = getSupportActionBar();

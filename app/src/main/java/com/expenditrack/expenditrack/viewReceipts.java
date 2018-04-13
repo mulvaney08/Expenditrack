@@ -70,7 +70,7 @@ public class viewReceipts extends AppCompatActivity {
 
         //Spinner
         //Spinner spinner  = (Spinner) findViewById(R.id.receiptsFilterSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.receipts_filter_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.seQuestionArray, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //spinner.setAdapter(adapter);
         //spinner.setOnItemSelectedListener(this);

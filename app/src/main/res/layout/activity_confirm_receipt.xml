@@ -13,7 +13,7 @@
         android:background="@color/colorPrimary">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/viewReceiptsToolbar"
+            android:id="@+id/confirmToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -38,7 +38,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Manage Receipt"
+            android:text="@string/manage_receipt"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="22dp" />
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:layout_marginTop="20dp"
-                    android:hint="Date of Purchase"
+                    android:hint="@string/date_of_purchase"
                     android:inputType="none"
                     android:onClick="setDate"
                     android:textColor="#000000"
@@ -145,7 +145,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:hint="Total Spent"
+                    android:hint="@string/total_spent"
                     android:textSize="20sp" />
 
                 <EditText
@@ -153,7 +153,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:hint="Buyer"
+                    android:hint="@string/buyer"
                     android:textSize="20sp" />
 
                 <Spinner
@@ -173,7 +173,7 @@
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
             android:background="@color/colorPrimary"
-            android:text="Confirm"
+            android:text="@string/confirm"
             android:textAllCaps="false"
             android:textColor="#ffffff" />
 

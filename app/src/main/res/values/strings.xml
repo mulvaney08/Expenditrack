@@ -1,14 +1,5 @@
 <resources>
     <string name="app_name">Expenditrack</string>
-    <string name="hw">Hello World</string>
-
-    <!--Username Spinner Content -->
-    <string-array name="receipts_filter_array">
-        <item>All</item>
-        <item>Aaron</item>
-        <item>Bec</item>
-    </string-array>
-
     <string-array name="category_array">
         <item>Fashion</item>
         <item>Travel</item>
@@ -28,5 +19,43 @@
         <item>Pet Food/Supplies</item>
         <item>Other</item>
     </string-array>
+    <string-array name="seQuestionArray">
+        <item>Choose a security question</item>
+        <item>What is your mothers maiden name?</item>
+        <item>What was the name of your first pet?</item>
+        <item>What is the name of your childhood best friend?</item>
+        <item>What is your favourite operating system?</item>
+    </string-array>
     <string name="title_activity_view_pie_charts">view_pie_charts</string>
+    <string name="home">Home</string>
+    <string name="view_receipts">View Receipts</string>
+    <string name="view_graphs">View Graphs</string>
+    <string name="add_receipt_voice">Add Receipt(Voice)</string>
+    <string name="scan_image">Scanning Image</string>
+    <string name="date_of_purchase">Date of Purchase</string>
+    <string name="total_spent">Total Spent</string>
+    <string name="buyer">Buyer</string>
+    <string name="confirm">Confirm</string>
+    <string name="manage_receipt">Manage Receipt</string>
+    <string name="login">Login</string>
+    <string name="welcome_to_expenditrack">Welcome to Expenditrack</string>
+    <string name="email">Email</string>
+    <string name="pword">Password</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="register_for_expenditrack">Register for Expenditrack</string>
+    <string name="answer">Answer</string>
+    <string name="already_reg">User already registered</string>
+    <string name="unable_to_load">Unable to load database</string>
+    <string name="error_inputs">Error on inputs</string>
+    <string name="username">Username</string>
+    <string name="user_add_success">User added succesfully</string>
+    <string name="fail_to_add_user">Failed to add user</string>
+    <string name="success_login">Login successful</string>
+    <string name="access_down">Access to database is down</string>
+    <string name="retrieve_password">Retrieve Password</string>
+    <string name="sec_answer">Security Question Answer</string>
+    <string name="retrieve_question">Retrieve Question</string>
+    <string name="security_question">Security Question</string>
+    <string name="question_retrieve">Unable to retrieve question</string>
 </resources>

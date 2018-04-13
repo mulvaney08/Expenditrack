@@ -145,14 +145,7 @@ public class Main extends AppCompatActivity {
             }
         });
     }
-//
-//    public static void initialiseFBase(){
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//
-//        // Write a message to the database
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,8 +159,7 @@ public class Main extends AppCompatActivity {
             signInAnonymously();
         }
 
-        Utils.initialiseFBase();
-
+        Log.d("find me",""+Utils.receiptRef.toString());
         setContentView(R.layout.activity_main);
 
         final Intent speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -400,7 +392,7 @@ public class Main extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     private void callCloudVision(final Bitmap bitmap) throws IOException {
         // Switch text to loading
-        mImageDetails.setText("Scanning Image");
+        mImageDetails.setText(R.string.scan_image);
 
         // Do the real work in an async task, because we need to use the network anyway
         new AsyncTask<Object, Void, String>() {
