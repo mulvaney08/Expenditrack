@@ -1,19 +1,30 @@
 package com.expenditrack.expenditrack;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,29 +35,28 @@ public class LoginActivity extends AppCompatActivity {
     Intent main_intent;
     Intent forgotP_intent;
 
-    int i;
+    static String username;
+    String password;
 
+    ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
         Toolbar toolbar = findViewById(R.id.loginToolbar);
         setSupportActionBar(toolbar);
-
-        try {
-            Utils.setUserReference();
-        } catch (Exception e) {
-            generateToast(getString(R.string.access_down));
-        }
-
 
         login = findViewById(R.id.loginButton);
         register = findViewById(R.id.registerButton);
         forgotPword = findViewById(R.id.forgotPword);
         usernameIn = findViewById(R.id.username_input);
         pWordIn = findViewById(R.id.passwd_input);
+        loading = findViewById(R.id.loading_login);
+        loading.setVisibility(View.GONE);
         register_intent = new Intent(this, RegisterActivity.class);
         main_intent = new Intent(this, Main.class);
         forgotP_intent = new Intent(this, ForgotPasswordActivity.class);
@@ -55,7 +65,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    login();
+                    username = usernameIn.getText().toString();
+                    password = pWordIn.getText().toString();
+                    login(username, password);
                 } catch (Exception e) {
                     generateToast(getString(R.string.unable_to_load));
                 }
@@ -65,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                startActivity(register_intent);
             }
         });
 
@@ -81,43 +93,38 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-    public void login() {
+    public void login(String username, String password) {
 
-        //Get contents from Firebase into String From : https://www.youtube.com/watch?v=WDGmpvKpHyw
-        Utils.usersRef.addListenerForSingleValueEvent(new ValueEventListener() { //SingleValueEvent Listener to prevent the append method causing duplicate entries
+        boolean found = false;
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+        for (int i = 0; i < Utils.usernames.size(); i++) {
+            if (Utils.usernames.get(i).equals(username) && Utils.pWords.get(i).equals(password)) {
+                found = true;
+            }
+        }
 
-                    try {
-                        if (ds.child("username").getValue().toString().matches(usernameIn.getText().toString()) && ds.child("passwd").getValue().toString().matches(pWordIn.getText().toString())) {
-                            i = 1;
-
-                        } else{
-                            i = 0;
-                        }
-                    } catch (Exception e) {
-                        generateToast("Cannot access database");
-                    }
-
-                }
-                if(i == 1){
+        if (found) {
+            Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
+            loading.setVisibility(View.VISIBLE);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                    loading.setVisibility(View.GONE);
                     generateToast(getString(R.string.success_login));
-                    Utils.initialiseFBase(usernameIn.getText().toString());
                     startActivity(main_intent);
-                }else if(i == 0)
-                {
-                    generateToast("Login details incorrect");
                 }
-            }
+            }, 2000);
+        } else {
+            generateToast("Wrong information");
+        }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 }

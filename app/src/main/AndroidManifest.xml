@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/expenditrackicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -61,8 +61,11 @@
         <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".LoginActivity" />
-        <activity android:name=".ForgotPasswordActivity"
-            android:parentActivityName=".LoginActivity"/>
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:parentActivityName=".SplashScreen"/>
     </application>
 
 </manifest>

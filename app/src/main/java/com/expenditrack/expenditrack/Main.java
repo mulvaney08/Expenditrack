@@ -81,7 +81,6 @@ import java.lang.*;
 public class Main extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-    private String username = "Aaron";
 
     private Uri file;
     public String filePath = "";
@@ -94,7 +93,6 @@ public class Main extends AppCompatActivity {
     StorageReference storageRef = storage.getReference().child("Aaron/Receipts/" + FILE_NAME);
 
     String message = "";
-    private String supplier = "";
     private String category = "";
     String apiResponse = "\n\nThis is what we found:\n\n";
     String totalAmount = "";
@@ -126,7 +124,6 @@ public class Main extends AppCompatActivity {
 
 
     private DatabaseReference mDatabase;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
     public void uploadToFBase(File image) {
@@ -152,21 +149,15 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            // do your stuff
-        } else {
-            signInAnonymously();
-        }
 
-        Log.d("find me",""+Utils.receiptRef.toString());
+
         setContentView(R.layout.activity_main);
 
         final Intent speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speech.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
 
         TextView userWelcome = findViewById(R.id.userWelcome);
-        userWelcome.setText(username);
+        userWelcome.setText(LoginActivity.username);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         final Intent viewReceiptsIntent = new Intent(this, viewReceipts.class);
         final Intent viewGraphsIntent = new Intent(this, viewGraphs.class);
@@ -260,20 +251,6 @@ public class Main extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void signInAnonymously() {
-        mAuth.signInAnonymously().addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                // do your stuff
-            }
-        }).addOnFailureListener(this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.e("TAG", "signInAnonymously:FAILURE", exception);
-            }
-        });
     }
 
     public void startGalleryChooser() {
@@ -509,7 +486,7 @@ public class Main extends AppCompatActivity {
         String totalPrefix = "TRANSACTION";
         message = "";
         cardAmount = "";
-        supplier = "";
+        String supplier = "";
 
         List<EntityAnnotation> text = response.getResponses().get(0).getTextAnnotations();
         if (text != null) {
@@ -655,7 +632,7 @@ public class Main extends AppCompatActivity {
     public Intent pushValuesToReceipt(Intent intent, String supplierName, String totalAmount, String category) {
         intent.putExtra("Supplier", supplierName);
         intent.putExtra("Total", totalAmount);
-        intent.putExtra("Buyer", username);
+        intent.putExtra("Buyer", LoginActivity.username);
         intent.putExtra("Category", category);
 
         return intent;
