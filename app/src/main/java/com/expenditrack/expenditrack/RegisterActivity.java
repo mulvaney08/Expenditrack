@@ -49,9 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-
-        Utils.loadUserInfo();
-
         register = findViewById(R.id.actualRegisterButton);
         usernameIn = findViewById(R.id.username_input_register);
         pWordIn = findViewById(R.id.passwd_input_register);
@@ -138,8 +135,10 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             newUser = new User(username, pWord, secQuest, secAns);
             Utils.writeUser(newUser);
+            Utils.loadUserInfo();
+
+
         }
-        Utils.loadUserInfo();
 
 
     }

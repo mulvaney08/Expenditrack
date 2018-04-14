@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -78,10 +79,6 @@ public class Utils {
     }
 
     public static void loadUserInfo() {
-        usernames.clear();
-        secQs.clear();
-        pWords.clear();
-        secAnswers.clear();
         try {
             Utils.setUserReference();
             Utils.usersRef.addListenerForSingleValueEvent(new ValueEventListener() { //SingleValueEvent Listener to prevent the append method causing duplicate entries

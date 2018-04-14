@@ -31,12 +31,19 @@ public class SplashScreen extends AppCompatActivity {
 
     ProgressBar loading;
 
+    final int extendRun = 500;
+
+    Handler handler = new Handler();
+
+    Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        intent = new Intent(SplashScreen.this, LoginActivity.class);
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
@@ -51,7 +58,8 @@ public class SplashScreen extends AppCompatActivity {
 
         image = findViewById(R.id.loadImage);
 
-        runInBG();
+        loading.setVisibility(View.VISIBLE);
+        runInBG(extendRun);
     }
 
 
@@ -69,16 +77,20 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
-    public void runInBG() {
-        Handler handler = new Handler();
+    public void runInBG(final int extendRun) {
         handler.postDelayed(new Runnable() {
+
             @Override
             public void run() {
-                loading.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
-                loading.setVisibility(View.GONE);
-                startActivity(intent);
+                if(Utils.usernames.size() > 0){
+                    loading.setVisibility(View.GONE);
+                    startActivity(intent);
+                }
+                else {
+                    runInBG(extendRun);
+                }
+
             }
-        }, 3000);
+        }, 500);
     }
 }
