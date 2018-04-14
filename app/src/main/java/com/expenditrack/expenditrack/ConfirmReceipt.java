@@ -3,6 +3,7 @@ package com.expenditrack.expenditrack;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,8 @@ public class ConfirmReceipt extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_receipt);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Intent myIntent = this.getIntent();
 

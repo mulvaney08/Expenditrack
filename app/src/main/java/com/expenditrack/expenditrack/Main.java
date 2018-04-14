@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,7 +27,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -120,6 +123,10 @@ public class Main extends AppCompatActivity {
 
     private ImageView mMainImage;
 
+    ImageButton viewR, viewG, addV, addC, addG;
+
+    Intent speech;
+
     protected static final int RESULT_SPEECH = 5;
 
 
@@ -127,20 +134,24 @@ public class Main extends AppCompatActivity {
 
 
     public void uploadToFBase(File image) {
-        Uri file = Uri.fromFile(image);
-        UploadTask uploadTask = storageRef.putFile(file);
+        try {
+            Uri file = Uri.fromFile(image);
+            UploadTask uploadTask = storageRef.putFile(file);
 
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-            }
-        });
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(Main.this, "There was a problem with the image, please try again", Toast.LENGTH_SHORT);
+        }
     }
 
 
@@ -150,19 +161,66 @@ public class Main extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        final Intent speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speech.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
 
         TextView userWelcome = findViewById(R.id.userWelcome);
         userWelcome.setText(LoginActivity.username);
+        viewR = findViewById(R.id.viewReceiptsButton);
+        viewG = findViewById(R.id.viewGraphsButton);
+        addV = findViewById(R.id.voiceButton);
+        addC = findViewById(R.id.camerButton);
+        addG = findViewById(R.id.galleryButton);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         final Intent viewReceiptsIntent = new Intent(this, viewReceipts.class);
         final Intent viewGraphsIntent = new Intent(this, viewGraphs.class);
-        try{
+        try {
             Utils.loadReceipts();
-        } catch (Exception e){
-            Toast.makeText(this, "Cannot load receipts",Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Cannot load receipts", Toast.LENGTH_SHORT).show();
         }
+
+        viewR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(viewReceiptsIntent);
+                Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
+            }
+        });
+
+        viewG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(viewGraphsIntent);
+            }
+        });
+
+        addV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callVoice();
+            }
+        });
+
+        addC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCamera();
+            }
+        });
+
+        addG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    startGalleryChooser();
+                } catch (Exception e) {
+                    Toast.makeText(Main.this, "There was a problem with the image selected", Toast.LENGTH_SHORT);
+                }
+            }
+        });
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -181,16 +239,20 @@ public class Main extends AppCompatActivity {
                         } else if (menuItem.getItemId() == R.id.viewGraphs) {
                             menuItem.setChecked(true);
                             startActivity(viewGraphsIntent);
-                        } else if (menuItem.getItemId() == R.id.speechAdd){
+                        } else if (menuItem.getItemId() == R.id.speechAdd) {
+                            menuItem.setChecked(true);
+                            callVoice();
+                        } else if (menuItem.getItemId() == R.id.cameraAdd) {
+                            menuItem.setChecked(true);
+                            startCamera();
+                        } else if (menuItem.getItemId() == R.id.galleryAdd) {
                             menuItem.setChecked(true);
                             try {
-                                startActivityForResult(speech, RESULT_SPEECH);
-                            } catch (ActivityNotFoundException a) {
-                                Toast t = Toast.makeText(getApplicationContext(),
-                                        "Opps! Your device doesn't support Speech to Text",
-                                        Toast.LENGTH_SHORT);
-                                t.show();
+                                startGalleryChooser();
+                            } catch (Exception e) {
+                                Toast.makeText(Main.this, "There was a problem with the image selected", Toast.LENGTH_SHORT);
                             }
+
                         }
 
 
@@ -201,38 +263,36 @@ public class Main extends AppCompatActivity {
                     }
                 });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        final Intent addAlertIntent = new Intent(this, addAlert.class);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
                 builder
-                        .setMessage("Choose an action")
-                        .setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                        .setMessage(R.string.choose_method)
+                        .setPositiveButton(getString(R.string.galleryWord), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startGalleryChooser();
                             }
                         })
-                        .setNegativeButton("Camera", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.cameraWord), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startCamera();
                             }
                         })
-                        .setNeutralButton("Add Alert", new DialogInterface.OnClickListener() {
+                        .setNeutralButton(getString(R.string.voiceWord), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(addAlertIntent);
+                                callVoice();
                             }
 
                         });
@@ -242,8 +302,20 @@ public class Main extends AppCompatActivity {
         });
 
         //response = (LinearLayout) findViewById(R.id.);
-        mImageDetails = (TextView) findViewById(R.id.image_details);
-        mMainImage = (ImageView) findViewById(R.id.main_image);
+        mImageDetails = findViewById(R.id.image_details);
+        mMainImage = findViewById(R.id.main_image);
+    }
+
+    public void callVoice() {
+        try {
+            Toast.makeText(this, "I spent 'Amount' in 'Shop Name'", Toast.LENGTH_LONG).show();
+            startActivityForResult(speech, RESULT_SPEECH);
+        } catch (ActivityNotFoundException a) {
+            Toast t = Toast.makeText(getApplicationContext(),
+                    "Opps! Your device doesn't support Speech to Text",
+                    Toast.LENGTH_SHORT);
+            t.show();
+        }
     }
 
     @Override
@@ -297,34 +369,39 @@ public class Main extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            uploadImage(data.getData());
-        } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            uploadImage(photoUri);
-        } else if (requestCode == RESULT_SPEECH && null != data){
-            ArrayList<String> text = data
-                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        try {
+            if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+                uploadImage(data.getData());
+            } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
+                Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+                uploadImage(photoUri);
+            } else if (requestCode == RESULT_SPEECH && null != data) {
+                ArrayList<String> text = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-            speechResponse = text.get(0);
-            convertSpeech(speechResponse);
+                speechResponse = text.get(0);
+                convertSpeech(speechResponse);
+            }
+        } catch (Exception e) {
+            Toast.makeText(Main.this, "There was an issue, please try again", Toast.LENGTH_SHORT);
         }
+
     }
 
-    private void convertSpeech(String speechResponse){
+    private void convertSpeech(String speechResponse) {
 
         String supplier = "";
         String totalAmount = "";
         String category = "";
 
-        if(speechResponse != null){
-            for (int i = 0; i <= speechResponse.length(); i++){
+        if (speechResponse != null) {
+            for (int i = 0; i <= speechResponse.length(); i++) {
                 supplier = speechResponse.substring(speechResponse.lastIndexOf(" in ") + 4, speechResponse.length());
                 totalAmount = speechResponse.substring(speechResponse.lastIndexOf("€") + 1, speechResponse.lastIndexOf(" in "));
             }
         }
 
-        callConfirmReceipt(supplier,totalAmount);
+        callConfirmReceipt(supplier, totalAmount);
 
     }
 
@@ -625,7 +702,7 @@ public class Main extends AppCompatActivity {
         message += "Shop Name: " + supplier + "\nTotal spent: " + totalAmount + "\nTime: " + timeStamp;
 
 
-        callConfirmReceipt(supplier,totalAmount);
+        callConfirmReceipt(supplier, totalAmount);
 
         return message + apiResponse;
         //return message;
@@ -640,12 +717,6 @@ public class Main extends AppCompatActivity {
 
         return intent;
     }
-//
-//    public void callEditReceipt(String supplierName, String totalAmount){
-//        Intent intent = new Intent(this,editReceipt.class);
-//
-//        startActivity(pushValuesToReceipt(intent,supplierName,totalAmount));
-//    }
 
     public void callConfirmReceipt(String supplierName, String totalAmount) {
         Intent intent = new Intent(this, ConfirmReceipt.class);

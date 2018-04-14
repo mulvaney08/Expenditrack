@@ -1,6 +1,7 @@
 package com.expenditrack.expenditrack;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ public class viewGraphs extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_graphs);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);

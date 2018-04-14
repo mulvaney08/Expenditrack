@@ -2,6 +2,7 @@ package com.expenditrack.expenditrack;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -151,6 +152,8 @@ public class view_pie_charts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pie_charts);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
 
@@ -166,6 +169,7 @@ public class view_pie_charts extends AppCompatActivity {
 
         final float padding = PixelUtils.dpToPix(30);
         pie.getPie().setPadding(padding, padding, padding, padding);
+
 
         // detect segment clicks:
         pie.setOnTouchListener(new View.OnTouchListener() {
@@ -267,12 +271,12 @@ public class view_pie_charts extends AppCompatActivity {
         pie.getBorderPaint().setColor(Color.TRANSPARENT);
         pie.getBackgroundPaint().setColor(Color.TRANSPARENT);
 
+        setupIntroAnimation();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        setupIntroAnimation();
     }
 
 //    protected void updateDonutText() {

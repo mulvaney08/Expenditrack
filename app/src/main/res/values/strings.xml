@@ -30,7 +30,7 @@
     <string name="home">Home</string>
     <string name="view_receipts">View Receipts</string>
     <string name="view_graphs">View Graphs</string>
-    <string name="add_receipt_voice">Add Receipt(Voice)</string>
+    <string name="add_receipt_voice">Add Receipt (Voice)</string>
     <string name="scan_image">Scanning Image</string>
     <string name="date_of_purchase">Date of Purchase</string>
     <string name="total_spent">Total Spent</string>
@@ -59,4 +59,17 @@
     <string name="security_question">Security Question</string>
     <string name="question_retrieve">Unable to retrieve question</string>
     <string name="all_fields">All fields must be filled</string>
+    <string name="addReceiptCamera"> Add Receipt (Camera) </string>
+    <string name="add_receipt_gallery">Add Receipt (Gallery)</string>
+    <string name="choose_method">Choose method to add a receipt</string>
+    <string name="galleryWord">Gallery</string>
+    <string name="cameraWord">Camera</string>
+    <string name="voiceWord">Voice</string>
+    <string name="unable_to_load_user">Unable to load users</string>
+    <string name="unable_to_load_receipta">unable to load receipts</string>
+    <string name="cant_write_receipt">cannot write receipt</string>
+    <string name="personal_homepage">Personal Homepage</string>
+    <string name="username_here">Username here</string>
+    <string name="add_receipt_cam">Add Receipt (Cam)</string>
+    <string name="welcome">Welcome</string>
 </resources>

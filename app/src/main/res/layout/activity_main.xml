@@ -7,83 +7,213 @@
 -->
 
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:fitsSystemWindows="true">
-
-<include layout="@layout/test_responses" />
-
-<!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-<FrameLayout
-    android:id="@+id/content_frame"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+    <include layout="@layout/test_responses" />
 
-    <android.support.constraint.ConstraintLayout
+    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-        <TextView
-            android:id="@+id/homeMessage"
-            android:layout_width="341dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="72dp"
-            android:text="Personal Homepage"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.521"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/userWelcome"
+
+                <TextView
+                    android:id="@+id/homeMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="100dp"
+                    android:text="@string/welcome"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/userWelcome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/username_here"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/homeMessage" />
+
+                <ImageButton
+                    android:id="@+id/viewReceiptsButton"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@mipmap/listbutton_image"
+                    android:contentDescription="@string/view_receipts"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/listName" />
+
+                <ImageButton
+                    android:id="@+id/viewGraphsButton"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@mipmap/expenditrackicon"
+                    android:contentDescription="@string/view_graphs"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.864"
+                    app:layout_constraintStart_toEndOf="@+id/viewReceiptsButton"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <ImageButton
+                    android:id="@+id/voiceButton"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@mipmap/micbutton_image"
+                    android:contentDescription="@string/add_receipt_voice"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                <ImageButton
+                    android:id="@+id/camerButton"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="32dp"
+                    android:background="@mipmap/camerabutton_image"
+                    android:contentDescription="@string/addReceiptCamera"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.771"
+                    app:layout_constraintStart_toEndOf="@+id/voiceButton"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                <ImageButton
+                    android:id="@+id/galleryButton"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@mipmap/gallerybutton_image"
+                    android:contentDescription="@string/add_receipt_gallery"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                <TextView
+                    android:id="@+id/listName"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/view_receipts"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userWelcome" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/view_graphs"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/listName"
+                    app:layout_constraintTop_toBottomOf="@+id/userWelcome" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/add_receipt_voice"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewReceiptsButton" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/add_receipt_cam"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/textView4"
+                    app:layout_constraintTop_toBottomOf="@+id/viewGraphsButton" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="440dp"
+                    android:text="@string/add_receipt_gallery"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userWelcome" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:textSize="20sp"
-            android:textColor="@color/colorPrimary"
-            android:text="Username here"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeMessage" />
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@android:drawable/ic_input_add" />
 
+    </FrameLayout>
 
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_input_add" />
-
-</FrameLayout>
-
-<!-- Container for contents of drawer - use NavigationView to make configuration easier -->
-<android.support.design.widget.NavigationView
-    android:id="@+id/nav_view"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:fitsSystemWindows="true"
-    app:menu="@menu/drawer_view"
-    app:headerLayout="@layout/nav_header"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_view" />
 
 </android.support.v4.widget.DrawerLayout>

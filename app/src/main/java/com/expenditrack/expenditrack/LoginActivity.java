@@ -1,6 +1,7 @@
 package com.expenditrack.expenditrack;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Toolbar toolbar = findViewById(R.id.loginToolbar);
         setSupportActionBar(toolbar);

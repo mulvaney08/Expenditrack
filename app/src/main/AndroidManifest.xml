@@ -55,7 +55,6 @@
         <activity
             android:name=".view_category_pie"
             android:parentActivityName=".view_pie_charts" />
-        <activity android:name=".addAlert" />
         <activity
             android:name=".Main"
             android:parentActivityName=".LoginActivity" />

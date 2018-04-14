@@ -1,6 +1,6 @@
 package com.expenditrack.expenditrack;
 
-/**
+/*
  * Created by Aaron on 23/10/2017.
  * <p>
  * Reference to project developed by Fung LAM
@@ -51,8 +51,7 @@ public class Utils {
     static ArrayList<String> pWords = new ArrayList<>();
     static ArrayList<Receipt> receipts = new ArrayList<>();
 
-    static Receipt r1 = new Receipt();
-    ;
+    static private Receipt r1 = new Receipt();
 
     //public static String updateKey = receiptRef.child().getKey();
 
@@ -99,10 +98,12 @@ public class Utils {
                 }
             });
         } catch (Exception e) {
+            Log.d("DB issue",""+R.string.unable_to_load_user);
         }
     }
 
     public static void loadReceipts(){
+        receipts.clear();
         try {
             Utils.initialiseFBase(LoginActivity.username);
             Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -126,6 +127,7 @@ public class Utils {
                 }
             });
         } catch (Exception e) {
+            Log.d("DB issue",""+R.string.unable_to_load_receipta);
         }
     }
 
@@ -159,7 +161,7 @@ public class Utils {
         try {
             receiptRef.child(r.getId()).setValue(r);
         }catch (Exception e){
-
+            Log.d("DB issue",""+R.string.cant_write_receipt);
         }
     }
 

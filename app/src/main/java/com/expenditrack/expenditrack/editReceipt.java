@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -49,6 +50,8 @@ public class editReceipt extends AppCompatActivity {
 //        Main.initialiseFBase(mDatabase);
         //Utils.initialiseFBase();
         Intent myIntent = this.getIntent();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 //
 //        supplier_name = myIntent.getStringExtra("supplier");
 //        supplier_text_field = (EditText)findViewById(R.id.supplier_name_field);

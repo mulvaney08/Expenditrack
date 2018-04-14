@@ -21,8 +21,8 @@
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="cropped" value="true" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="C:\Users\Aaron\OneDrive\DOCUME~1-DESKTOP-TTTKKRN\Semester 8\Project\money.jpg" />
-                                      <entry key="outputName" value="money" />
+                                      <entry key="imageAsset" value="C:\Users\Aaron\OneDrive\DOCUME~1-DESKTOP-TTTKKRN\Semester 8\Project\my-icons-collection (1)\png\004-list.png" />
+                                      <entry key="outputName" value="listbutton_image" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -58,7 +58,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_mic_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_photo_library_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -68,7 +68,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_mic_black_24dp" />
+                            <entry key="outputName" value="ic_photo_library_black_24dp" />
                             <entry key="sourceFile" value="C:\Users\Aaron" />
                           </map>
                         </option>
