@@ -1,3 +1,4 @@
+
 package com.expenditrack.expenditrack;
 
 import android.content.Intent;
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     int positionOfSpinner;
 
-    boolean found = false;
+    String found;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if (position > 0) {
                     secQuest = secQuestion.getSelectedItem().toString();
                     positionOfSpinner = position;
+                    secAnswer.setFocusable(true);
+                    secAnswer.requestFocus();
                 } else {
                     positionOfSpinner = 0;
                 }
@@ -95,26 +98,30 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 register(positionOfSpinner);
                 Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
-                loading.setVisibility(View.VISIBLE);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (found) {
-                            generateToast(getString(R.string.already_reg));
-                            loading.setVisibility(View.GONE);
-                        } else {
+                if (found.equals("imhere")) {
+                    generateToast(getString(R.string.already_reg));
+                    loading.setVisibility(View.GONE);
+                } else {
+
+                    loading.setVisibility(View.VISIBLE);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
                             newUser = new User(username, pWord, secQuest, secAns);
                             Utils.writeUser(newUser);
+                            generateToast(getString(R.string.user_add_success));
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent);
                             Utils.loadUserInfo();
 
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             loading.setVisibility(View.GONE);
-                            generateToast(getString(R.string.user_add_success));
-                            startActivity(intent);
+
                         }
-                    }
-                }, 2000);
+
+                    }, 2000);
+                }
             }
         });
 
@@ -133,6 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
                 username = usernameIn.getText().toString();
                 pWord = pWordIn.getText().toString();
                 secAns = secAnswer.getText().toString();
+
             }
 
 
@@ -140,10 +148,16 @@ public class RegisterActivity extends AppCompatActivity {
             generateToast(getString(R.string.error_inputs));
         }
 
-        for (int i = 0; i < Utils.usernames.size(); i++) {
-            found = Utils.usernames.get(i).equals(username);
-        }
+        try {
+            if (Utils.usernames.contains(username)) {
+                found = "imhere";
+            } else if (!Utils.usernames.contains(username)) {
+                found = "nothere";
+            }
 
+
+        } catch (Exception e) {
+        }
 
     }
 }
