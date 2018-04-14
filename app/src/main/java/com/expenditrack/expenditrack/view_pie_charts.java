@@ -82,13 +82,6 @@ public class view_pie_charts extends AppCompatActivity {
         shop3SliceSize = round(totalShop3 / total * 10, 1);
         shop4SliceSize = round(totalShop4 / total * 10, 1);
 
-        Log.d("Total Spent: " + total, " total ");
-        Log.d(nameShop1 + ": " + shop1SliceSize, "is the size of the slice");
-        Log.d(nameShop2 + ": " + shop2SliceSize, "is the size of the slice");
-        Log.d(nameShop3 + ": " + shop3SliceSize, "is the size of the slice");
-        Log.d(nameShop4 + ": " + shop4SliceSize, "is the size of the slice");
-
-
     }
 
     private static double round(double value, int precision) {
@@ -246,7 +239,6 @@ public class view_pie_charts extends AppCompatActivity {
 
         getContents();
 
-        Log.d("shop name: ", "" + nameShop1);
         s1 = new Segment(nameShop1, shop1SliceSize);
         s2 = new Segment(nameShop2, shop2SliceSize);
         s3 = new Segment(nameShop3, shop3SliceSize);

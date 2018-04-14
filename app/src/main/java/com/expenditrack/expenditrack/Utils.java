@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.common.io.BaseEncoding;
 import com.google.firebase.database.DataSnapshot;
@@ -102,7 +103,6 @@ public class Utils {
                 }
             });
         } catch (Exception e) {
-            Log.d("DB issue",""+R.string.unable_to_load_user);
         }
     }
 
@@ -131,7 +131,6 @@ public class Utils {
                 }
             });
         } catch (Exception e) {
-            Log.d("DB issue",""+R.string.unable_to_load_receipta);
         }
     }
 
@@ -165,7 +164,6 @@ public class Utils {
         try {
             receiptRef.child(r.getId()).setValue(r);
         }catch (Exception e){
-            Log.d("DB issue",""+R.string.cant_write_receipt);
         }
     }
 

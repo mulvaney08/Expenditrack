@@ -370,19 +370,24 @@ public class Main extends AppCompatActivity {
     }
 
     public void startCamera() {
-        if (CheckPermissions.requestPermission(
-                this,
-                CAMERA_PERMISSIONS_REQUEST,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA)) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
-            currentImage = getCameraFile();
-            loadingHandler();
+        try{
+            if (CheckPermissions.requestPermission(
+                    this,
+                    CAMERA_PERMISSIONS_REQUEST,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA)) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
+                currentImage = getCameraFile();
+                loadingHandler();
+            }
+        }catch (Exception e){
+            Toast.makeText(this, R.string.problem_image, Toast.LENGTH_SHORT);
         }
+
     }
 
     public File getCameraFile() {
@@ -462,11 +467,9 @@ public class Main extends AppCompatActivity {
                 //mMainImage.setImageBitmap(bitmap);
 
             } catch (IOException e) {
-                Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, "Error with image", Toast.LENGTH_LONG).show();
             }
         } else {
-            Log.d(TAG, "Image picker gave us a null image.");
             Toast.makeText(this, "Error with image", Toast.LENGTH_LONG).show();
         }
     }
@@ -542,17 +545,13 @@ public class Main extends AppCompatActivity {
                             vision.images().annotate(batchAnnotateImagesRequest);
                     // Due to a bug: requests to Vision API containing large images fail when GZipped.
                     annotateRequest.setDisableGZipContent(true);
-                    Log.d(TAG, "created Cloud Vision request object, sending request");
 
                     BatchAnnotateImagesResponse response = annotateRequest.execute();
                     return convertResponseToString(response);
 
 
                 } catch (GoogleJsonResponseException e) {
-                    Log.d(TAG, "failed to make API request because " + e.getContent());
                 } catch (IOException e) {
-                    Log.d(TAG, "failed to make API request because of other IOException " +
-                            e.getMessage());
                 }
                 return "Cloud Vision API request failed. Check logs for details.";
             }

@@ -164,7 +164,6 @@ public class viewReceipts extends AppCompatActivity {
         final ReceiptAdapter filterAdapter = new ReceiptAdapter(this, filterList);
 
         String searchText = search.getText().toString();
-        Log.d("Search Query:", searchText);
         filterList.clear();
         for (int j = 0; j < receiptList.size(); j++) {
             if (receiptList.get(j).getSupplierName().toLowerCase().contains(searchText.toLowerCase()) ||
@@ -174,7 +173,6 @@ public class viewReceipts extends AppCompatActivity {
                     receiptList.get(j).getTotalSpent().contains(searchText)) {
                 Receipt newReceipt = (receiptList.get(j));
                 filterList.add(newReceipt);
-                Log.d("Test", receiptList.get(j).getSupplierName());
             } else {
 
             }
