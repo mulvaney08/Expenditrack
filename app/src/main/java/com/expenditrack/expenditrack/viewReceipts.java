@@ -150,8 +150,13 @@ public class viewReceipts extends AppCompatActivity {
         receiptsListView.setAdapter(null);
         receiptsListView.setAdapter(adapter);
 
-        Snackbar receiptsLoaded = Snackbar.make(findViewById(R.id.activity_view_receipts2), "Receipts Loaded", Snackbar.LENGTH_LONG);
-        receiptsLoaded.show();
+        if (Utils.receipts.size() > 0) {
+            Snackbar receiptsLoaded = Snackbar.make(findViewById(R.id.activity_view_receipts2), "Receipts Loaded", Snackbar.LENGTH_LONG);
+            receiptsLoaded.show();
+        } else {
+            Snackbar notLoaded = Snackbar.make(findViewById(R.id.activity_view_receipts2), "No receipts to show", Snackbar.LENGTH_LONG);
+            notLoaded.show();
+        }
     }
 
     public void filter() {

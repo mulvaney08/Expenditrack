@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,8 +87,6 @@ public class Main extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
 
-    private Uri file;
-    public String filePath = "";
     String timeStamp = new SimpleDateFormat("dd-MM-yyy_HH:mm:ss").format(new Date());
     public String FILE_NAME = "IMG_" + timeStamp + ".jpg";
 
@@ -103,7 +103,6 @@ public class Main extends AppCompatActivity {
 
     int indexStartOfCard = 0;
     int indexEndOfCard;
-    int indexOfTansaction;
 
     private static final String CLOUD_VISION_API_KEY = "AIzaSyA526OGaeqpaM0yIHtImKRRuSDzr_N0eDA";
 
@@ -117,20 +116,16 @@ public class Main extends AppCompatActivity {
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
     private String speechResponse;
-
     private TextView mImageDetails;
-
-
+    private TextView signOut;
     private ImageView mMainImage;
 
+    Intent loginIntent;
+    ProgressBar loading;
     ImageButton viewR, viewG, addV, addC, addG;
-
     Intent speech;
 
     protected static final int RESULT_SPEECH = 5;
-
-
-    private DatabaseReference mDatabase;
 
 
     public void uploadToFBase(File image) {
@@ -161,6 +156,9 @@ public class Main extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        loading = findViewById(R.id.loading_login);
+        loading.setVisibility(View.GONE);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         speech = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -174,8 +172,11 @@ public class Main extends AppCompatActivity {
         addC = findViewById(R.id.camerButton);
         addG = findViewById(R.id.galleryButton);
         mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        signOut = findViewById(R.id.signOut);
+        loginIntent = new Intent(this, LoginActivity.class);
         final Intent viewReceiptsIntent = new Intent(this, viewReceipts.class);
-        final Intent viewGraphsIntent = new Intent(this, viewGraphs.class);
+        final Intent viewGraphsIntent = new Intent(this, view_pie_charts.class);
         try {
             Utils.loadReceipts();
         } catch (Exception e) {
@@ -263,6 +264,15 @@ public class Main extends AppCompatActivity {
                     }
                 });
 
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(loginIntent);
+                Toast.makeText(Main.this, LoginActivity.username + " " + getString(R.string.signed_out), Toast.LENGTH_SHORT).show();
+                LoginActivity.username = "";
+            }
+        });
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -302,6 +312,7 @@ public class Main extends AppCompatActivity {
         });
 
         //response = (LinearLayout) findViewById(R.id.);
+        //Please remove us before you upload
         mImageDetails = findViewById(R.id.image_details);
         mMainImage = findViewById(R.id.main_image);
     }
@@ -310,12 +321,24 @@ public class Main extends AppCompatActivity {
         try {
             Toast.makeText(this, "I spent 'Amount' in 'Shop Name'", Toast.LENGTH_LONG).show();
             startActivityForResult(speech, RESULT_SPEECH);
+            loadingHandler();
         } catch (ActivityNotFoundException a) {
             Toast t = Toast.makeText(getApplicationContext(),
                     "Opps! Your device doesn't support Speech to Text",
                     Toast.LENGTH_SHORT);
             t.show();
         }
+    }
+
+    public void loadingHandler(){
+        loading.setVisibility(View.VISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loading.setVisibility(View.GONE);
+            }
+        }, 6000);
     }
 
     @Override
@@ -335,6 +358,7 @@ public class Main extends AppCompatActivity {
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select a photo"),
                     GALLERY_IMAGE_REQUEST);
+            loadingHandler();
         }
     }
 
@@ -357,6 +381,7 @@ public class Main extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
             currentImage = getCameraFile();
+            loadingHandler();
         }
     }
 

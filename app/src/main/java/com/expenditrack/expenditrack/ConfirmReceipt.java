@@ -100,7 +100,7 @@ public class ConfirmReceipt extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString());
+                receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString().toUpperCase(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString());
                 writeNewReceipt(receipt);
                 Utils.receipts.clear();
 

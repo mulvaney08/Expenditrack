@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -52,6 +53,9 @@ public class Utils {
     static ArrayList<Receipt> receipts = new ArrayList<>();
 
     static private Receipt r1 = new Receipt();
+
+    static DecimalFormat decim = new DecimalFormat("0.00");
+
 
     //public static String updateKey = receiptRef.child().getKey();
 

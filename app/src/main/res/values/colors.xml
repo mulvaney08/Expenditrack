@@ -3,4 +3,8 @@
     <color name="colorPrimary">#800020 </color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#005856</color>
+    <color name="blueGraph">#0000FF</color>
+    <color name="greenGraph">#00FF00</color>
+    <color name="pinkGraph">#FF69B4</color>
+    <color name="redGraph">#FF0000</color>
 </resources>

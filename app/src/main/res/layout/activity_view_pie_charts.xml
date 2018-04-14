@@ -41,34 +41,35 @@
         android:layout_marginTop="75dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Top 4"
+        android:text="@string/top_4"
         android:textAlignment="center"
         android:textSize="30sp"/>
 
         <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shops with most money spent"
+        android:text="@string/spends_all_time"
         android:textAlignment="center"
         android:textSize="25sp"/>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/shop1_info"
+        android:id="@+id/shop2_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:textSize="20sp"
+        android:textColor="@color/greenGraph"
         app:layout_constraintBottom_toTopOf="@+id/shop4_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mySimplePieChart"
         app:layout_constraintVertical_bias="0.112" />
 
     <TextView
-        android:id="@+id/shop2_info"
+        android:id="@+id/shop1_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -76,8 +77,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="20sp"
+        android:textColor="@color/redGraph"
         app:layout_constraintBottom_toTopOf="@+id/shop3_info"
-        app:layout_constraintEnd_toStartOf="@+id/shop1_info"
+        app:layout_constraintEnd_toStartOf="@+id/shop2_info"
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mySimplePieChart"
@@ -90,6 +92,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:textSize="20sp"
+        android:textColor="@color/blueGraph"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -101,6 +104,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:textSize="20sp"
+        android:textColor="@color/pinkGraph"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.969"

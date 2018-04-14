@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/views">
         <item
             android:id="@+id/home"
             android:icon="@mipmap/ic_home"
@@ -16,6 +17,11 @@
             android:icon="@drawable/ic_pie_chart_black_24dp"
             android:title="@string/view_graphs"
             />
+
+    </group>
+    <group android:checkableBehavior="single"
+        android:id="@+id/add">
+
         <item
             android:id="@+id/speechAdd"
             android:icon="@drawable/ic_mic_black_24dp"

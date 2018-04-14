@@ -38,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     int positionOfSpinner;
 
+    boolean found = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +97,19 @@ public class RegisterActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        loading.setVisibility(View.GONE);
-                        generateToast(getString(R.string.user_add_success));
-                        startActivity(intent);
+                        if (found) {
+                            generateToast(getString(R.string.already_reg));
+                            loading.setVisibility(View.GONE);
+                        } else {
+                            newUser = new User(username, pWord, secQuest, secAns);
+                            Utils.writeUser(newUser);
+                            Utils.loadUserInfo();
+
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            loading.setVisibility(View.GONE);
+                            generateToast(getString(R.string.user_add_success));
+                            startActivity(intent);
+                        }
                     }
                 }, 2000);
             }
@@ -112,7 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void register(int positionOfSpinner) {
 
-        boolean found = false;
         try {
             if (usernameIn.getText().toString().matches("") || pWordIn.getText().toString().matches("") || positionOfSpinner == 0 || secAnswer.getText().toString().matches("")) {
                 generateToast(getString(R.string.all_fields));
@@ -128,20 +138,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < Utils.usernames.size(); i++) {
-            if (Utils.usernames.get(i).matches(username)) {
+            if (Utils.usernames.get(i).equals(username)) {
                 found = true;
+            }else {
+                found = false;
             }
         }
 
-        if (found) {
-            generateToast(getString(R.string.already_reg));
-        } else {
-            newUser = new User(username, pWord, secQuest, secAns);
-            Utils.writeUser(newUser);
-            Utils.loadUserInfo();
 
-
-        }
 
 
     }

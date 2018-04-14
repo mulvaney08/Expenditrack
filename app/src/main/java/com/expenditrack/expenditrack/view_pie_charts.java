@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidplot.pie.PieChart;
 import com.androidplot.pie.PieRenderer;
@@ -50,20 +51,29 @@ public class view_pie_charts extends AppCompatActivity {
     private Segment s3;
     private Segment s4;
 
-    private double totalShop1;
-    private double totalShop2;
-    private double totalShop3;
-    private double totalShop4;
+    private double totalShop1 = 0;
+    private double totalShop2 = 0;
+    private double totalShop3 = 0;
+    private double totalShop4 = 0;
+
+    private String nameShop1 = "";
+    private String nameShop2 = "";
+    private String nameShop3 = "";
+    private String nameShop4 = "";
 
     private static double shop1SliceSize;
     private static double shop2SliceSize;
     private static double shop3SliceSize;
     private static double shop4SliceSize;
 
+    Intent mainIntent;
+
+    static ArrayList<String> shopNames = new ArrayList<>();
+    static ArrayList<Double> totals = new ArrayList<>();
 
     TextView shop1, shop2, shop3, shop4;
 
-    public void calculateSliceOfPie(double totalShop1, double totalShop2, double totalShop3, double totalShop4){
+    public void calculateSliceOfPie(double totalShop1, double totalShop2, double totalShop3, double totalShop4) {
 
         double total = totalShop1 + totalShop2 + totalShop3 + totalShop4;
 
@@ -72,87 +82,110 @@ public class view_pie_charts extends AppCompatActivity {
         shop3SliceSize = round(totalShop3 / total * 10, 1);
         shop4SliceSize = round(totalShop4 / total * 10, 1);
 
-        Log.d("Total Spent: " + total, " total " );
-        Log.d("Powercity: " + shop1SliceSize, "is the size of the slice" );
-        Log.d("Boots: " + shop2SliceSize, "is the size of the slice" );
-        Log.d("Tesco: " + shop3SliceSize, "is the size of the slice" );
-        Log.d("Easons: " + shop4SliceSize, "is the size of the slice" );
+        Log.d("Total Spent: " + total, " total ");
+        Log.d(nameShop1 + ": " + shop1SliceSize, "is the size of the slice");
+        Log.d(nameShop2 + ": " + shop2SliceSize, "is the size of the slice");
+        Log.d(nameShop3 + ": " + shop3SliceSize, "is the size of the slice");
+        Log.d(nameShop4 + ": " + shop4SliceSize, "is the size of the slice");
 
 
     }
 
-    private static double round(double value, int precision){
+    private static double round(double value, int precision) {
         int scale = (int) Math.pow(10, precision);
         return (double) Math.round(value * scale) / scale;
     }
 
-    public void viewCategoryGraph(View view){
-        Intent intent = new Intent(this,view_category_pie.class);
-        startActivity(intent);
-    }
-
-
-    public void getContents(){
+    public void getContents() {
         //Get contents from Firebase into String From : https://www.youtube.com/watch?v=WDGmpvKpHyw
-        Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() { //SingleValueEvent Listener to prevent the append method causing duplicate entries
 
-            @Override
-            public void onDataChange (DataSnapshot dataSnapshot){
+        try {
+            Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() { //SingleValueEvent Listener to prevent the append method causing duplicate entries
 
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    if(ds.child("supplierName").getValue().toString().equalsIgnoreCase("Powercity")){
-                        totalShop1 += Double.parseDouble(ds.child("totalSpent").getValue().toString());
-                        Log.d("Powercity: " + totalShop1, "is the total spent" );
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        totals.add(Double.parseDouble(ds.child("totalSpent").getValue().toString()));
+                        shopNames.add(ds.child("supplierName").getValue().toString());
                     }
-                    else if(ds.child("supplierName").getValue().toString().equalsIgnoreCase("Boots")){
-                        totalShop2 += Double.parseDouble(ds.child("totalSpent").getValue().toString());
-                        Log.d("Boots: " + totalShop2, "is the total spent" );
-
-                    }
-                    else if(ds.child("supplierName").getValue().toString().equalsIgnoreCase("Tesco") ){
-                        totalShop3 += Double.parseDouble(ds.child("totalSpent").getValue().toString());
-                        Log.d("Tesco: " + totalShop3, "is the total spent" );
-
-                    }
-                    else if(ds.child("supplierName").getValue().toString().equalsIgnoreCase("Easons")){
-                        totalShop4 += Double.parseDouble(ds.child("totalSpent").getValue().toString());
-                        Log.d("Easons: " + totalShop4, "is the total spent" );
-
-                    }
+                    storeInfo();
                 }
-                calculateSliceOfPie(totalShop1,totalShop2,totalShop3,totalShop4);
-                shop1 = (TextView) findViewById(R.id.shop1_info);
-                shop2 = (TextView) findViewById(R.id.shop2_info);
-                shop3 = (TextView) findViewById(R.id.shop3_info);
-                shop4 = (TextView) findViewById(R.id.shop4_info);
-
-                shop1.setText(s1.getTitle() + ": €"  +totalShop1);
-                shop2.setText(s2.getTitle() + ": €"  +totalShop2);
-                shop3.setText(s3.getTitle() + ": €"  +totalShop3);
-                shop4.setText(s4.getTitle() + ": €"  +totalShop4);
-            }
 
 
-            @Override
-            public void onCancelled (DatabaseError databaseError){
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        //Snackbar receiptsLoaded = Snackbar.make(findViewById(R.id.activity_view_receipts2), "Receipts Loaded", Snackbar.LENGTH_LONG);
-        //receiptsLoaded.show();
-        //Toast.makeText(this,"Receipts Loaded",Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(view_pie_charts.this, "Unable to load graph", Toast.LENGTH_SHORT);
+        }
 
     }
 
+    public void storeInfo() {
 
+        try {
+            nameShop1 = shopNames.get(0);
+            totalShop1 = totals.get(0);
+            nameShop2 = shopNames.get(1);
+            totalShop2 = totals.get(1);
+            nameShop3 = shopNames.get(2);
+            totalShop3 = totals.get(2);
+            nameShop4 = shopNames.get(3);
+            totalShop4 = totals.get(3);
+
+            for (int i = 0; i < shopNames.size(); i++) {
+                if (totals.get(i) > totalShop1) {
+                    totalShop1 = totals.get(i);
+                    nameShop1 = shopNames.get(i);
+                } else if (totals.get(i) > totalShop2) {
+                    totalShop2 = totals.get(i);
+                    nameShop2 = shopNames.get(i);
+                } else if (totals.get(i) > totalShop3) {
+                    totalShop3 = totals.get(i);
+                    nameShop3 = shopNames.get(i);
+                } else if (totals.get(i) > totalShop4) {
+                    totalShop4 = totals.get(i);
+                    nameShop4 = shopNames.get(i);
+                }
+
+            }
+
+            calculateSliceOfPie(totalShop1, totalShop2, totalShop3, totalShop4);
+            shop1 = findViewById(R.id.shop1_info);
+            shop2 = findViewById(R.id.shop2_info);
+            shop3 = findViewById(R.id.shop3_info);
+            shop4 = findViewById(R.id.shop4_info);
+
+            shop1.setText(nameShop1 + ": €" + totalShop1);
+            shop2.setText(nameShop2 + ": €" + totalShop2);
+            shop3.setText(nameShop3 + ": €" + totalShop3);
+            shop4.setText(nameShop4 + ": €" + totalShop4);
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Please add more receipts", Toast.LENGTH_SHORT).show();
+            startActivity(mainIntent);
+        }
+        totals.clear();
+        shopNames.clear();
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onResume() {
+        super.onResume();
+        getContents();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pie_charts);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mainIntent = new Intent(this, Main.class);
 
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
@@ -176,17 +209,14 @@ public class view_pie_charts extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 PointF click = new PointF(motionEvent.getX(), motionEvent.getY());
-                if(pie.getPie().containsPoint(click)) {
+                if (pie.getPie().containsPoint(click)) {
                     Segment segment = pie.getRenderer(PieRenderer.class).getContainingSegment(click);
 
-                    if(segment != null) {
+                    if (segment != null) {
                         final boolean isSelected = getFormatter(segment).getOffset() != 0;
                         deselectAll();
                         setSelected(segment, !isSelected);
                         pie.redraw();
-                        if(segment.getTitle().equalsIgnoreCase("Boots")){
-                            viewCategoryGraph(view);
-                        }
                     }
                 }
                 return false;
@@ -198,14 +228,14 @@ public class view_pie_charts extends AppCompatActivity {
 
             private void deselectAll() {
                 List<Segment> segments = pie.getRegistry().getSeriesList();
-                for(Segment segment : segments) {
+                for (Segment segment : segments) {
                     setSelected(segment, false);
                 }
             }
 
             private void setSelected(Segment segment, boolean isSelected) {
                 SegmentFormatter f = getFormatter(segment);
-                if(isSelected) {
+                if (isSelected) {
                     f.setOffset(SELECTED_SEGMENT_OFFSET);
                 } else {
                     f.setOffset(0);
@@ -214,34 +244,13 @@ public class view_pie_charts extends AppCompatActivity {
         });
 
 
-
-//        donutSizeSeekBar = (SeekBar) findViewById(R.id.donutSizeSeekBar);
-//        donutSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {}
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {}
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//                pie.getRenderer(PieRenderer.class).setDonutSize(seekBar.getProgress()/100f,
-//                        PieRenderer.DonutMode.PERCENT);
-//                pie.redraw();
-//                updateDonutText();
-//            }
-//        });
-
-        //donutSizeTextView = (TextView) findViewById(R.id.donutSizeTextView);
-        //updateDonutText();
-
         getContents();
 
-        s1 = new Segment("Powercity", shop1SliceSize);
-        s2 = new Segment("Boots", shop2SliceSize);
-        s3 = new Segment("Tesco", shop3SliceSize);
-        s4 = new Segment("Easons", shop4SliceSize);
-
+        Log.d("shop name: ", "" + nameShop1);
+        s1 = new Segment(nameShop1, shop1SliceSize);
+        s2 = new Segment(nameShop2, shop2SliceSize);
+        s3 = new Segment(nameShop3, shop3SliceSize);
+        s4 = new Segment(nameShop4, shop4SliceSize);
 
 
         EmbossMaskFilter emf = new EmbossMaskFilter(
