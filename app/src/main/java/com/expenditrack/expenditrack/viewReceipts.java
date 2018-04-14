@@ -30,24 +30,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-// Get Data From Firebase into Android: https://www.captechconsulting.com/blogs/firebase-realtime-database-android-tutorial
-//https://stackoverflow.com/questions/39800547/read-data-from-firebase-database
+
 public class viewReceipts extends AppCompatActivity {
 
-
-    String username = "aaron";
-
-    //Views
     ListView receiptsListView;
     Spinner spinner;
     EditText search;
 
-    ArrayAdapter<Receipt> arrayAdapter;
     ReceiptAdapter adapter;
 
-    //Variables
     ArrayList<Receipt> receiptList;
-    int spinnerLocation;
     ArrayList<Receipt> filterList;
     Boolean listIsFiltered = false;
 
@@ -60,26 +52,14 @@ public class viewReceipts extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-//        try {
-//            Utils.loadReceipts();
-//        } catch (Exception e) {
-//            Toast.makeText(this, "Cannot load receipts", Toast.LENGTH_SHORT).show();
-//        }
-
         receiptList = Utils.receipts;
         adapter = new ReceiptAdapter(this, receiptList);
 
         receiptsListView = findViewById(R.id.receiptsListView);
 
-
-        //Spinner
-        //Spinner spinner  = (Spinner) findViewById(R.id.receiptsFilterSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.seQuestionArray, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinner.setAdapter(adapter);
-        //spinner.setOnItemSelectedListener(this);
-        //final TextView receiptTv = (TextView) findViewById(R.id.receiptTv);
-        //Button viewDbBtn = (Button) findViewById(R.id.dbBtn);
+
 
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
@@ -138,11 +118,6 @@ public class viewReceipts extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        try{
-//            Utils.loadReceipts();
-//        } catch (Exception e){
-//            Toast.makeText(this, "Cannot load receipts",Toast.LENGTH_SHORT).show();
-//        }
     }
 
     public void getContents() {

@@ -67,29 +67,29 @@ public class editReceipt extends AppCompatActivity {
         buyer = myIntent.getStringExtra("Buyer");
         id = myIntent.getStringExtra("ID");
 
-        final EditText supplierName = (EditText)findViewById(R.id.supplier_name_field);
-        final EditText totalSpent = (EditText)findViewById(R.id.total_spent_field);
-        final EditText buyerView = (EditText)findViewById(R.id.buyer_name_field);
+        final EditText supplierName = findViewById(R.id.supplier_name_field);
+        final EditText totalSpent = findViewById(R.id.total_spent_field);
+        final EditText buyerView = findViewById(R.id.buyer_name_field);
 
         supplierName.setText(supplier);
         totalSpent.setText(total);
         buyerView.setText(buyer);
 
-        dateView = (TextView) findViewById(R.id.showDate);
+        dateView = findViewById(R.id.showDate);
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
 
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        showDate(year, month+1, day);
+        showDate(year, month + 1, day);
 
-        Spinner spinner  = (Spinner) findViewById(R.id.categorySpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.category_array, R.layout.category_spinner_item);
+        Spinner spinner = findViewById(R.id.categorySpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_array, R.layout.category_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         //spinner.setOnItemSelectedListener();
 
-        edit = (Button)findViewById(R.id.editReceipt);
+        edit = findViewById(R.id.editReceipt);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,9 +98,9 @@ public class editReceipt extends AppCompatActivity {
                 Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        oldReceipt = new Receipt(buyerView.getText().toString(),supplierName.getText().toString(),totalSpent.getText().toString(),dateView.getText().toString(), id);
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                                Utils.receiptRef.child(id).setValue(oldReceipt);
+                        oldReceipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), totalSpent.getText().toString(), dateView.getText().toString(), id);
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Utils.receiptRef.child(id).setValue(oldReceipt);
                         }
 //                        if(dataSnapshot.getValue() != null){
 //                            Utils.writeReceipt(oldReceipt,Utils.getID());
@@ -124,13 +124,13 @@ public class editReceipt extends AppCompatActivity {
 
     }
 
-    private void viewReceipts(){
+    private void viewReceipts() {
         Intent viewReceipt = new Intent(this, viewReceipts.class);
         startActivity(viewReceipt);
     }
 
-    private void writeNewReceipt(String username, String supplierName, String totalAmount, String timeStamp, String id, String category){
-        Receipt r1 = new Receipt(username,supplierName,totalAmount,timeStamp, category);
+    private void writeNewReceipt(String username, String supplierName, String totalAmount, String timeStamp, String id, String category) {
+        Receipt r1 = new Receipt(username, supplierName, totalAmount, timeStamp, category);
 
         Utils.writeReceipt(r1);
 //        mDatabase.child("users").child(username).child("receipts").child("item12").setValue(r1);
@@ -165,7 +165,7 @@ public class editReceipt extends AppCompatActivity {
                     // arg1 = year
                     // arg2 = month
                     // arg3 = day
-                    showDate(arg1, arg2+1, arg3);
+                    showDate(arg1, arg2 + 1, arg3);
                 }
             };
 
@@ -173,7 +173,6 @@ public class editReceipt extends AppCompatActivity {
         dateView.setText(new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year));
     }
-
 
 
 }

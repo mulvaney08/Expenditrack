@@ -50,10 +50,13 @@ public class RegisterActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.registerToolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        try {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        } catch (Exception e) {
 
+        }
         register = findViewById(R.id.actualRegisterButton);
         usernameIn = findViewById(R.id.username_input_register);
         pWordIn = findViewById(R.id.passwd_input_register);
@@ -138,14 +141,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < Utils.usernames.size(); i++) {
-            if (Utils.usernames.get(i).equals(username)) {
-                found = true;
-            }else {
-                found = false;
-            }
+            found = Utils.usernames.get(i).equals(username);
         }
-
-
 
 
     }

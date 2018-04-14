@@ -23,16 +23,19 @@ public class viewGraphs extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        try {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        } catch (Exception e) {
 
+        }
 
     }
 
 
-    public void viewPieCharts(View view){
-        Intent intent = new Intent(this,view_pie_charts.class);
+    public void viewPieCharts(View view) {
+        Intent intent = new Intent(this, view_pie_charts.class);
         startActivity(intent);
     }
 

@@ -7,6 +7,9 @@ package com.expenditrack.expenditrack;
  * Fung LAM, Cloud-Vision, (), Github repository, https://github.com/GoogleCloudPlatform/cloud-vision.git
  */
 
+// Get Data From Firebase into Android: https://www.captechconsulting.com/blogs/firebase-realtime-database-android-tutorial
+//https://stackoverflow.com/questions/39800547/read-data-from-firebase-database
+
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -33,19 +36,13 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Provides utility logic for getting the app's SHA1 signature. Used with restricted API keys.
- *
  */
 public class Utils {
-
-    private static String uniqueID;
-    public static DatabaseReference mRef;
-    private static FirebaseDatabase mDatabase;
 
     private static FirebaseDatabase firebaseDatabase;
     private static DatabaseReference databaseReference;
     public static DatabaseReference receiptRef;
     public static DatabaseReference usersRef;
-    public static DatabaseReference receiptIDReference;
 
     static ArrayList<String> usernames = new ArrayList<>();
     static ArrayList<String> secAnswers = new ArrayList<>();
@@ -54,12 +51,6 @@ public class Utils {
     static ArrayList<Receipt> receipts = new ArrayList<>();
 
     static private Receipt r1 = new Receipt();
-
-    static DecimalFormat decim = new DecimalFormat("0.00");
-
-
-    //public static String updateKey = receiptRef.child().getKey();
-
 
     /**
      * Gets the SHA1 signature, hex encoded for inclusion with Google Cloud Platform API requests
@@ -106,7 +97,7 @@ public class Utils {
         }
     }
 
-    public static void loadReceipts(){
+    public static void loadReceipts() {
         receipts.clear();
         try {
             Utils.initialiseFBase(LoginActivity.username);
@@ -149,7 +140,7 @@ public class Utils {
         receiptRef = databaseReference.child("users").child(username).child("receipts");
     }
 
-    public static void setUserReference(){
+    public static void setUserReference() {
         getDatabase();
         databaseReference = firebaseDatabase.getReferenceFromUrl("https://expenditrack-184010.firebaseio.com/");
         usersRef = databaseReference.child("Users");
@@ -163,7 +154,7 @@ public class Utils {
     public static void writeReceipt(Receipt r) {
         try {
             receiptRef.child(r.getId()).setValue(r);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
@@ -172,7 +163,7 @@ public class Utils {
     }
 
     public static void hideSoftKeyboard(View view, Object o) {
-        if(view!=null) {
+        if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) o;
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }

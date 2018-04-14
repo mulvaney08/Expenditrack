@@ -127,29 +127,6 @@ public class Main extends AppCompatActivity {
 
     protected static final int RESULT_SPEECH = 5;
 
-
-    public void uploadToFBase(File image) {
-        try {
-            Uri file = Uri.fromFile(image);
-            UploadTask uploadTask = storageRef.putFile(file);
-
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                }
-            });
-        } catch (Exception e) {
-            Toast.makeText(Main.this, "There was a problem with the image, please try again", Toast.LENGTH_SHORT);
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,7 +195,7 @@ public class Main extends AppCompatActivity {
                 try {
                     startGalleryChooser();
                 } catch (Exception e) {
-                    Toast.makeText(Main.this, "There was a problem with the image selected", Toast.LENGTH_SHORT);
+                    Toast.makeText(Main.this, "There was a problem with the image selected", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -251,7 +228,7 @@ public class Main extends AppCompatActivity {
                             try {
                                 startGalleryChooser();
                             } catch (Exception e) {
-                                Toast.makeText(Main.this, "There was a problem with the image selected", Toast.LENGTH_SHORT);
+                                Toast.makeText(Main.this, "There was a problem with the image selected", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -330,7 +307,7 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    public void loadingHandler(){
+    public void loadingHandler() {
         loading.setVisibility(View.VISIBLE);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -370,7 +347,7 @@ public class Main extends AppCompatActivity {
     }
 
     public void startCamera() {
-        try{
+        try {
             if (CheckPermissions.requestPermission(
                     this,
                     CAMERA_PERMISSIONS_REQUEST,
@@ -384,8 +361,8 @@ public class Main extends AppCompatActivity {
                 currentImage = getCameraFile();
                 loadingHandler();
             }
-        }catch (Exception e){
-            Toast.makeText(this, R.string.problem_image, Toast.LENGTH_SHORT);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.problem_image, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -413,7 +390,7 @@ public class Main extends AppCompatActivity {
                 convertSpeech(speechResponse);
             }
         } catch (Exception e) {
-            Toast.makeText(Main.this, "There was an issue, please try again", Toast.LENGTH_SHORT);
+            Toast.makeText(Main.this, "There was an issue, please try again", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -463,8 +440,6 @@ public class Main extends AppCompatActivity {
                                 1200);
 
                 callCloudVision(bitmap);
-                uploadToFBase(currentImage);
-                //mMainImage.setImageBitmap(bitmap);
 
             } catch (IOException e) {
                 Toast.makeText(this, "Error with image", Toast.LENGTH_LONG).show();
@@ -610,7 +585,6 @@ public class Main extends AppCompatActivity {
                     //Variation 1 card captured with colon afterwards Card:
                     if (words.getDescription().contains("Card:")) {
                         //If the payment type card was found
-                        tempString = words.getDescription();
                         card = "Card:";
                         //Getting the index at the start of the sequence Card:
                         indexStartOfCard = words.getDescription().indexOf(card);
@@ -628,7 +602,6 @@ public class Main extends AppCompatActivity {
                     //Variation 2 card captured with space afterwards Card
                     else if (words.getDescription().contains("Card ")) {
                         //If the payment type card was found
-                        tempString = words.getDescription();
                         card = "Card ";
                         //Getting the index at the start of the sequence Card with space
                         indexStartOfCard = words.getDescription().indexOf(card);
@@ -646,7 +619,6 @@ public class Main extends AppCompatActivity {
                     //Variation 3 card captured without colon or space afterwards just the number needed to capture total spent on card
                     else if (!words.getDescription().contains("Card ") && !words.getDescription().contains("Card:") && words.getDescription().contains("Card")) {
                         //If the payment type card was found
-                        tempString = words.getDescription();
                         card = "Card";
                         //Getting the index at the start of the sequence Card without space
                         indexStartOfCard = words.getDescription().indexOf(card);
@@ -667,8 +639,8 @@ public class Main extends AppCompatActivity {
                 else if (words.getDescription().contains("copan") || words.getDescription().contains("COPAN") || words.getDescription().contains("Copan")) {
 
                     supplier = "Copan Limited";
-                    int indexOfDecimal = 0;
-                    int indexOfEndOfDecimal = 0;
+                    int indexOfDecimal;
+                    int indexOfEndOfDecimal;
                     category = "Alcohol";
 
                     //tempString = words.getDescription().substring(words.getDescription().indexOf("TOTAL") - 6, words.getDescription().indexOf("TOTAL") - 5);
@@ -750,15 +722,6 @@ public class Main extends AppCompatActivity {
     boolean checkIfDouble(String stringIn) {
         try {
             Double.parseDouble(stringIn);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    boolean checkIfInt(String stringIn) {
-        try {
-            Integer.parseInt(stringIn);
             return true;
         } catch (NumberFormatException e) {
             return false;

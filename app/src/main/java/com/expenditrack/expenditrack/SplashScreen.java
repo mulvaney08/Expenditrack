@@ -49,10 +49,9 @@ public class SplashScreen extends AppCompatActivity {
         intent = new Intent(SplashScreen.this, LoginActivity.class);
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            // do your stuff
-        } else {
+        if (user == null) {
             signInAnonymously();
+
         }
 
         Utils.loadUserInfo();
@@ -85,11 +84,10 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void run() {
-                if(Utils.usernames.size() > 0){
+                if (Utils.usernames.size() > 0) {
                     loading.setVisibility(View.GONE);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     runInBG(extendRun);
                 }
 

@@ -41,9 +41,6 @@ public class view_pie_charts extends AppCompatActivity {
     private XYPlot plot;
     public static final int SELECTED_SEGMENT_OFFSET = 50;
 
-    //private TextView donutSizeTextView;
-    //private SeekBar donutSizeSeekBar;
-
     public PieChart pie;
 
     private Segment s1;
@@ -112,7 +109,7 @@ public class view_pie_charts extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(view_pie_charts.this, "Unable to load graph", Toast.LENGTH_SHORT);
+            Toast.makeText(view_pie_charts.this, "Unable to load graph", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -183,15 +180,15 @@ public class view_pie_charts extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        try {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        }catch (Exception e){
 
+        }
         // initialize our XYPlot reference:
-        pie = (PieChart) findViewById(R.id.mySimplePieChart);
-
-        // enable the legend:
-        //pie.getLegend().setVisible(true);
+        pie = findViewById(R.id.mySimplePieChart);
 
         final float padding = PixelUtils.dpToPix(30);
         pie.getPie().setPadding(padding, padding, padding, padding);
@@ -280,10 +277,6 @@ public class view_pie_charts extends AppCompatActivity {
         super.onStart();
     }
 
-//    protected void updateDonutText() {
-//        donutSizeTextView.setText(donutSizeSeekBar.getProgress() + "%");
-//    }
-
     protected void setupIntroAnimation() {
 
         final PieRenderer renderer = pie.getRenderer(PieRenderer.class);
@@ -305,7 +298,7 @@ public class view_pie_charts extends AppCompatActivity {
             }
         });
 
-        // the animation will run for 1.5 seconds:
+        // the animation will run for 1 second:
         animator.setDuration(1000);
         animator.start();
 

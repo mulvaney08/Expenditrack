@@ -1,11 +1,10 @@
 package com.expenditrack.expenditrack;
 
-/**
+/*
  * Created by Aaron on 23/10/2017.
- *
+ * <p>
  * Reference to project developed by Fung LAM
  * Fung LAM, Cloud-Vision, (), Github repository, https://github.com/GoogleCloudPlatform/cloud-vision.git
- *
  */
 
 import android.app.Activity;
@@ -43,13 +42,6 @@ public class CheckPermissions {
 
     public static boolean permissionGranted(
             int requestCode, int permissionCode, int[] grantResults) {
-        if (requestCode == permissionCode) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
+        return requestCode == permissionCode && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
     }
 }
