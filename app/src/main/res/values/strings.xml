@@ -81,4 +81,7 @@
     <string name="signed_out">signed out!</string>
     <string name="problem_image">Problem with image, please try again</string>
     <string name="unable_add_user">Unable to add user</string>
+    <string name="added">Receipt Added</string>
+    <string name="edited">Receipt Edited</string>
+    <string name="cant_load">Cannot load receipts</string>
 </resources>

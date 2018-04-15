@@ -113,7 +113,7 @@ public class ConfirmReceipt extends AppCompatActivity {
                     public void run() {
                         Intent intent = new Intent(ConfirmReceipt.this, viewReceipts.class);
                         loading.setVisibility(View.GONE);
-                        Toast.makeText(ConfirmReceipt.this, getString(R.string.user_add_success), Toast.LENGTH_SHORT);
+                        Toast.makeText(ConfirmReceipt.this, R.string.added, Toast.LENGTH_SHORT);
                         startActivity(intent);
                     }
                 }, 3000);

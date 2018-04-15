@@ -43,7 +43,6 @@ public class viewReceipts extends AppCompatActivity {
     ArrayList<Receipt> filterList;
     Boolean listIsFiltered = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +56,14 @@ public class viewReceipts extends AppCompatActivity {
 
         receiptsListView = findViewById(R.id.receiptsListView);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.seQuestionArray, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+        loadReceipts();
 
         receiptsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -107,6 +104,21 @@ public class viewReceipts extends AppCompatActivity {
             }
         });
 //       filter();
+    }
+
+    public void loadReceipts(){
+        Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                receiptList = Utils.receipts;
+                adapter = new ReceiptAdapter(viewReceipts.this, receiptList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

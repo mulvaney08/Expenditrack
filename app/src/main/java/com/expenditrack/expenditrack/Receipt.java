@@ -26,6 +26,10 @@ public class Receipt {
     public Receipt() {
     }
 
+    public Receipt(String id) {
+        this.id = id;
+    }
+
     public Receipt(String username, String supplierName, String totalSpent, String timeStamp, String category) {
         this.username = username;
         this.supplierName = supplierName;
@@ -33,6 +37,15 @@ public class Receipt {
         this.timeStamp = timeStamp;
         this.category = category;
         this.id = UUID.randomUUID().toString();
+    }
+
+    public Receipt(String username, String supplierName, String totalSpent, String timeStamp, String category, String id) {
+        this.username = username;
+        this.supplierName = supplierName;
+        this.totalSpent = totalSpent;
+        this.timeStamp = timeStamp;
+        this.category = category;
+        this.id = id;
     }
 
     public String getUsername() {
