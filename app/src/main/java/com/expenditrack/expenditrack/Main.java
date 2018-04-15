@@ -290,8 +290,8 @@ public class Main extends AppCompatActivity {
 
         //response = (LinearLayout) findViewById(R.id.);
         //Please remove us before you upload
-        mImageDetails = findViewById(R.id.image_details);
-        mMainImage = findViewById(R.id.main_image);
+//        mImageDetails = findViewById(R.id.image_details);
+//        mMainImage = findViewById(R.id.main_image);
     }
 
     public void callVoice() {
@@ -326,7 +326,7 @@ public class Main extends AppCompatActivity {
             public void run() {
                 loading.setVisibility(View.GONE);
             }
-        }, 15000);
+        }, 20000);
     }
 
     @Override
@@ -463,7 +463,7 @@ public class Main extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     private void callCloudVision(final Bitmap bitmap) throws IOException {
         // Switch text to loading
-        mImageDetails.setText(R.string.scan_image);
+        //.setText(R.string.scan_image);
 
         // Do the real work in an async task, because we need to use the network anyway
         new AsyncTask<Object, Void, String>() {
@@ -543,7 +543,7 @@ public class Main extends AppCompatActivity {
             }
 
             protected void onPostExecute(String result) {
-                mImageDetails.setText(result);
+                //mImageDetails.setText(result);
             }
         }.execute();
     }
@@ -736,6 +736,20 @@ public class Main extends AppCompatActivity {
                     }
                 }
                 //End GREENSTAR example, testing on GREENSTAR receipt -----------------------------------------------------------------------------------------------------------
+                //Start - TESCO example, testing on TESCO - receipt -----------------------------------------------------------------------------------------------------------------
+                else if (words.getDescription().contains("TESCO") || words.getDescription().contains("tesco")) {
+
+                    supplier = "TESCO";
+                    category = "Groceries";
+                    String keyword = "EUR";
+                    for (int i = 0; i < words.getDescription().lastIndexOf(keyword); i++) {
+                        if (words.getDescription().contains(keyword)) {
+                            totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(keyword) - 5, words.getDescription().lastIndexOf(keyword) - 1);
+                        }
+                    }
+                }
+                //End TESCO example, testing on TESCO receipt -----------------------------------------------------------------------------------------------------------
+
             }
         } else {
 
