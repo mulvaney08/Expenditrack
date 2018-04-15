@@ -318,6 +318,17 @@ public class Main extends AppCompatActivity {
         }, 7000);
     }
 
+    public void loadingHandlerCamera() {
+        loading.setVisibility(View.VISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loading.setVisibility(View.GONE);
+            }
+        }, 15000);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -359,7 +370,7 @@ public class Main extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
                 currentImage = getCameraFile();
-                loadingHandler();
+                loadingHandlerCamera();
             }
         } catch (Exception e) {
             Toast.makeText(this, R.string.problem_image, Toast.LENGTH_SHORT).show();
@@ -567,6 +578,9 @@ public class Main extends AppCompatActivity {
         cardAmount = "";
         String supplier = "";
 
+        apiResponse = "";
+        totalAmount = "";
+
         List<EntityAnnotation> text = response.getResponses().get(0).getTextAnnotations();
         if (text != null) {
             //Check if response is null
@@ -643,16 +657,11 @@ public class Main extends AppCompatActivity {
                     int indexOfEndOfDecimal;
                     category = "Alcohol";
 
-                    //tempString = words.getDescription().substring(words.getDescription().indexOf("TOTAL") - 6, words.getDescription().indexOf("TOTAL") - 5);
-
                     //if (checkIfDouble(tempString) && checkIfInt(tempString)) {
                     if (words.getDescription().contains("TOTAL")) {
 
                         indexOfDecimal = words.getDescription().indexOf("TOTAL") - 26;
                         indexOfEndOfDecimal = words.getDescription().indexOf("TOTAL") - 22;
-
-//                                if (checkIfDouble(words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal))) {
-//                                }
 
                         totalAmount = words.getDescription().substring(indexOfDecimal, indexOfEndOfDecimal);
 
@@ -667,7 +676,6 @@ public class Main extends AppCompatActivity {
                     String currency = "EUR";
                     for (int i = 0; i < words.getDescription().lastIndexOf(currency); i++) {
                         if (words.getDescription().contains(currency)) {
-//                                totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(currency), words.getDescription().lastIndexOf(currency +5));
                             totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(currency) - 15, words.getDescription().lastIndexOf(currency) - 10);
                         }
                     }
@@ -688,7 +696,46 @@ public class Main extends AppCompatActivity {
                     }
                 }
                 //End Halfords example, testing on Halfords receipt -----------------------------------------------------------------------------------------------------------
-                //Start - example, testing on - receipt -----------------------------------------------------------------------------------------------------------------
+                //Start - CALVIN KLEIN example, testing on - receipt -----------------------------------------------------------------------------------------------------------------
+
+                else if (words.getDescription().contains("CALVIN KLEIN") || words.getDescription().contains("CALVINKLEIN")) {
+
+                    supplier = "CALVIN KLEIN";
+                    category = "Fashion";
+                    String currency = "EUR";
+                    for (int i = 0; i < words.getDescription().lastIndexOf(currency); i++) {
+                        if (words.getDescription().contains(currency)) {
+                            totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(currency) + 4, words.getDescription().lastIndexOf(currency) + 9);
+                        }
+                    }
+                }
+                //End CALVIN KLEIN example, testing on CALVIN receipt -----------------------------------------------------------------------------------------------------------
+                //Start - NIKE example, testing on NIKE- receipt -----------------------------------------------------------------------------------------------------------------
+                else if (words.getDescription().contains("NIKE") || words.getDescription().contains("Nike")) {
+
+                    supplier = "NIKE";
+                    category = "Fashion";
+                    String keyword = "Total";
+                    for (int i = 0; i < words.getDescription().lastIndexOf(keyword); i++) {
+                        if (words.getDescription().contains(keyword)) {
+                            totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(keyword) + 6, words.getDescription().lastIndexOf(keyword) + 11);
+                        }
+                    }
+                }
+                //End NIKE example, testing on CALVIN receipt -----------------------------------------------------------------------------------------------------------
+                //Start - GREENSTAR example, testing on GREENSTAR - receipt -----------------------------------------------------------------------------------------------------------------
+                else if (words.getDescription().contains("Greenstar") || words.getDescription().contains("greenstar")) {
+
+                    supplier = "GREENSTAR";
+                    category = "Other";
+                    String keyword = "Bank Details";
+                    for (int i = 0; i < words.getDescription().lastIndexOf(keyword); i++) {
+                        if (words.getDescription().contains(keyword)) {
+                            totalAmount = words.getDescription().substring(words.getDescription().lastIndexOf(keyword) - 6, words.getDescription().lastIndexOf(keyword) - 1);
+                        }
+                    }
+                }
+                //End GREENSTAR example, testing on GREENSTAR receipt -----------------------------------------------------------------------------------------------------------
             }
         } else {
 
