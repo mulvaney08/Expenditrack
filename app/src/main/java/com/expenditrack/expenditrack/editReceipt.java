@@ -103,11 +103,17 @@ public class editReceipt extends AppCompatActivity {
                 try {
                     if (buyerView.getText().toString().matches("") || supplierName.getText().toString().matches("") || totalSpent.getText().toString().matches("") || dateView.getText().toString().matches("")) {
                         Toast.makeText(editReceipt.this, R.string.all_fields_please, Toast.LENGTH_SHORT).show();
-                    } else {
+                    } else if (!totalSpent.getText().toString().matches(".*\\d+.*")) {
+                        Toast.makeText(editReceipt.this, R.string.enter_number, Toast.LENGTH_SHORT).show();
+                    }
+                        else
+                    {
                         Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            double holdTotal = Double.parseDouble(totalSpent.getText().toString());
+                            String newTotal = String.format("%.2f", holdTotal);
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                oldReceipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString(), id);
+                                oldReceipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), newTotal, dateView.getText().toString(), spinner.getSelectedItem().toString(), id);
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                     Utils.receiptRef.child(id).setValue(oldReceipt);
                                 }
@@ -121,15 +127,14 @@ public class editReceipt extends AppCompatActivity {
 
                         Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
                         loading.setVisibility(View.VISIBLE);
-                        Utils.receipts.clear();
                         try {
-                            Utils.loadReceipts();
-                        } catch (Exception e) {
+                            Utils.receipts.clear();
+                            Utils.loadReceipts();                        } catch (Exception e) {
                             Toast.makeText(editReceipt.this, R.string.cant_load, Toast.LENGTH_SHORT).show();
                         }
                         runInBG(extendRun);
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }

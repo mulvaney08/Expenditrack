@@ -86,4 +86,6 @@
     <string name="cant_load">Cannot load receipts</string>
     <string name="issure_adding">Issue adding receipt</string>
     <string name="all_fields_please">Please fill all fields</string>
+    <string name="enter_number">Please enter a number for Total</string>
+    <string name="add_receipt_manual">Add Receipt (Manual)</string>
 </resources>

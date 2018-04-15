@@ -123,6 +123,7 @@ public class Utils {
             });
         } catch (Exception e) {
         }
+
     }
 
     private static String signatureDigest(Signature sig) {

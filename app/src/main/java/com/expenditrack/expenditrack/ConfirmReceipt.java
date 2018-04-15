@@ -108,8 +108,13 @@ public class ConfirmReceipt extends AppCompatActivity {
                 try {
                     if (buyerView.getText().toString().matches("") || supplierName.getText().toString().matches("") || totalSpent.getText().toString().matches("") || dateView.getText().toString().matches("")) {
                         Toast.makeText(ConfirmReceipt.this, R.string.all_fields_please, Toast.LENGTH_SHORT).show();
-                    } else {
-                        receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString().toUpperCase(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString());
+                    } else if (!totalSpent.getText().toString().matches(".*\\d+.*")) {
+                        Toast.makeText(ConfirmReceipt.this, R.string.enter_number, Toast.LENGTH_SHORT).show();
+                    }else {
+                        double holdTotal = Double.parseDouble(totalSpent.getText().toString());
+                        String newTotal = String.format("%.2f", holdTotal);
+
+                        receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString().toUpperCase(), newTotal, dateView.getText().toString(), spinner.getSelectedItem().toString());
                         writeNewReceipt(receipt);
                         Utils.receipts.clear();
 
