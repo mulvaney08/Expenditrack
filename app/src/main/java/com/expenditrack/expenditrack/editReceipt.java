@@ -100,32 +100,38 @@ public class editReceipt extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        oldReceipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString(), id);
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Utils.receiptRef.child(id).setValue(oldReceipt);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-                Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
-                loading.setVisibility(View.VISIBLE);
-                Utils.receipts.clear();
                 try {
-                    Utils.loadReceipts();
-                } catch (Exception e) {
-                    Toast.makeText(editReceipt.this, R.string.cant_load, Toast.LENGTH_SHORT).show();
-                }
-                runInBG(extendRun);
+                    if (buyerView.getText().toString().matches("") || supplierName.getText().toString().matches("") || totalSpent.getText().toString().matches("") || dateView.getText().toString().matches("")) {
+                        Toast.makeText(editReceipt.this, R.string.all_fields_please, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Utils.receiptRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                oldReceipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString(), id);
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    Utils.receiptRef.child(id).setValue(oldReceipt);
+                                }
+                            }
 
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
+                        loading.setVisibility(View.VISIBLE);
+                        Utils.receipts.clear();
+                        try {
+                            Utils.loadReceipts();
+                        } catch (Exception e) {
+                            Toast.makeText(editReceipt.this, R.string.cant_load, Toast.LENGTH_SHORT).show();
+                        }
+                        runInBG(extendRun);
+                    }
+                } catch (Exception e){
+
+                }
             }
         });
 

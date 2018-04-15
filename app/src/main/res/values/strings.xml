@@ -84,4 +84,6 @@
     <string name="added">Receipt Added</string>
     <string name="edited">Receipt Edited</string>
     <string name="cant_load">Cannot load receipts</string>
+    <string name="issure_adding">Issue adding receipt</string>
+    <string name="all_fields_please">Please fill all fields</string>
 </resources>

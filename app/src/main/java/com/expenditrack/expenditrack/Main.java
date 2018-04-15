@@ -223,6 +223,10 @@ public class Main extends AppCompatActivity {
                         } else if (menuItem.getItemId() == R.id.cameraAdd) {
                             menuItem.setChecked(true);
                             startCamera();
+                        } else if (menuItem.getItemId() == R.id.manualAdd) {
+                            menuItem.setChecked(true);
+                            Intent manual = new Intent(Main.this, ConfirmReceipt.class);
+                            startActivity(manual);
                         } else if (menuItem.getItemId() == R.id.galleryAdd) {
                             menuItem.setChecked(true);
                             try {

@@ -54,7 +54,7 @@ public class ConfirmReceipt extends AppCompatActivity {
 
         supplier = myIntent.getStringExtra("Supplier");
         total = myIntent.getStringExtra("Total");
-        buyer = myIntent.getStringExtra("Buyer");
+        buyer = LoginActivity.username;
         category = myIntent.getStringExtra("Category");
 
 
@@ -89,34 +89,48 @@ public class ConfirmReceipt extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        for (int i = 0; i < 17; i++) {
-            if (spinner.getAdapter().getItem(i).toString().contains(category)) {
-                spinner.setSelection(i);
+        try {
+            for (int i = 0; i < 17; i++) {
+                if (spinner.getAdapter().getItem(i).toString().contains(category)) {
+                    spinner.setSelection(i);
+                }
             }
+        } catch (Exception e) {
+
         }
+
 
         confirm = (Button) findViewById(R.id.confirmReceipt);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString().toUpperCase(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString());
-                writeNewReceipt(receipt);
-                Utils.receipts.clear();
+                try {
+                    if (buyerView.getText().toString().matches("") || supplierName.getText().toString().matches("") || totalSpent.getText().toString().matches("") || dateView.getText().toString().matches("")) {
+                        Toast.makeText(ConfirmReceipt.this, R.string.all_fields_please, Toast.LENGTH_SHORT).show();
+                    } else {
+                        receipt = new Receipt(buyerView.getText().toString(), supplierName.getText().toString().toUpperCase(), totalSpent.getText().toString(), dateView.getText().toString(), spinner.getSelectedItem().toString());
+                        writeNewReceipt(receipt);
+                        Utils.receipts.clear();
 
-                Utils.loadReceipts();
-                Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
-                loading.setVisibility(View.VISIBLE);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(ConfirmReceipt.this, viewReceipts.class);
-                        loading.setVisibility(View.GONE);
-                        Toast.makeText(ConfirmReceipt.this, R.string.added, Toast.LENGTH_SHORT);
-                        startActivity(intent);
+                        Utils.loadReceipts();
+                        Utils.hideSoftKeyboard(getCurrentFocus(), getSystemService(INPUT_METHOD_SERVICE));
+                        loading.setVisibility(View.VISIBLE);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(ConfirmReceipt.this, viewReceipts.class);
+                                loading.setVisibility(View.GONE);
+                                Toast.makeText(ConfirmReceipt.this, R.string.added, Toast.LENGTH_SHORT);
+                                startActivity(intent);
+                            }
+                        }, 3000);
                     }
-                }, 3000);
+                } catch (Exception e) {
+                    Toast.makeText(ConfirmReceipt.this, R.string.issure_adding, Toast.LENGTH_SHORT);
+                }
+
             }
         });
 
