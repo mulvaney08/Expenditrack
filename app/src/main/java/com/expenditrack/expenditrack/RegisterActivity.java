@@ -101,6 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (found.equals("imhere")) {
                     generateToast(getString(R.string.already_reg));
                     loading.setVisibility(View.GONE);
+                    found = "nothere";
                 } else {
 
                     loading.setVisibility(View.VISIBLE);
@@ -109,15 +110,18 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            newUser = new User(username, pWord, secQuest, secAns);
-                            Utils.writeUser(newUser);
-                            generateToast(getString(R.string.user_add_success));
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            Utils.loadUserInfo();
-
-                            loading.setVisibility(View.GONE);
-
+                            try {
+                                newUser = new User(username, pWord, secQuest, secAns);
+                                Utils.writeUser(newUser);
+                                generateToast(getString(R.string.user_add_success));
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                Utils.loadUserInfo();
+                                loading.setVisibility(View.GONE);
+                            } catch (Exception e) {
+                                generateToast(getString(R.string.unable_add_user));
+                                loading.setVisibility(View.GONE);
+                            }
                         }
 
                     }, 2000);
@@ -140,9 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
                 username = usernameIn.getText().toString();
                 pWord = pWordIn.getText().toString();
                 secAns = secAnswer.getText().toString();
-
             }
-
 
         } catch (Exception e) {
             generateToast(getString(R.string.error_inputs));

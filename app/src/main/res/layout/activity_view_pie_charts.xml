@@ -24,7 +24,7 @@
 
     <com.androidplot.pie.PieChart
         android:layout_marginTop="150dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="200dp"
         android:id="@+id/mySimplePieChart"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -56,58 +56,62 @@
 
     <TextView
         android:id="@+id/shop2_info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:textSize="20sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/greenGraph"
-        app:layout_constraintBottom_toTopOf="@+id/shop4_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mySimplePieChart"
-        app:layout_constraintVertical_bias="0.112" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shop1_info" />
 
     <TextView
         android:id="@+id/shop1_info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textSize="20sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/redGraph"
-        app:layout_constraintBottom_toTopOf="@+id/shop3_info"
-        app:layout_constraintEnd_toStartOf="@+id/shop2_info"
-        app:layout_constraintHorizontal_bias="0.03"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mySimplePieChart"
-        app:layout_constraintVertical_bias="0.112" />
+        app:layout_constraintTop_toBottomOf="@+id/mySimplePieChart" />
 
     <TextView
         android:id="@+id/shop3_info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        android:textSize="20sp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/blueGraph"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shop2_info" />
 
     <TextView
         android:id="@+id/shop4_info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:textSize="20sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/pinkGraph"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.969"
-        app:layout_constraintStart_toEndOf="@+id/shop3_info" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shop3_info" />
+
+    <!--<ProgressBar-->
+        <!--android:id="@+id/loading_graphs"-->
+        <!--android:layout_width="125dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_marginBottom="308dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:indeterminate="true"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/appBarLayout"-->
+        <!--app:layout_constraintVertical_bias="0.938" />-->
+
 
 </android.support.constraint.ConstraintLayout>

@@ -74,7 +74,6 @@ public class Utils {
     }
 
     public static void loadUserInfo() {
-        Utils.setUserReference();
         try {
 
             Utils.usersRef.addListenerForSingleValueEvent(new ValueEventListener() { //SingleValueEvent Listener to prevent the append method causing duplicate entries

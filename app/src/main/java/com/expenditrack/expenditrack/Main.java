@@ -315,7 +315,7 @@ public class Main extends AppCompatActivity {
             public void run() {
                 loading.setVisibility(View.GONE);
             }
-        }, 6000);
+        }, 7000);
     }
 
     @Override

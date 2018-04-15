@@ -80,4 +80,5 @@
     <string name="sign_out">Sign Out</string>
     <string name="signed_out">signed out!</string>
     <string name="problem_image">Problem with image, please try again</string>
+    <string name="unable_add_user">Unable to add user</string>
 </resources>

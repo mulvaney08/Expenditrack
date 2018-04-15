@@ -3,6 +3,7 @@ package com.expenditrack.expenditrack;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.*;
 
@@ -70,6 +73,14 @@ public class view_pie_charts extends AppCompatActivity {
 
     TextView shop1, shop2, shop3, shop4;
 
+    ProgressBar loading;
+    Handler handler = new Handler();
+    final int extendRun = 500;
+
+    int control;
+    int controlCompare;
+
+
     public void calculateSliceOfPie(double totalShop1, double totalShop2, double totalShop3, double totalShop4) {
 
         double total = totalShop1 + totalShop2 + totalShop3 + totalShop4;
@@ -99,6 +110,7 @@ public class view_pie_charts extends AppCompatActivity {
                         totals.add(Double.parseDouble(ds.child("totalSpent").getValue().toString()));
                         shopNames.add(ds.child("supplierName").getValue().toString());
                     }
+                    control = totals.size();
                     storeInfo();
                 }
 
@@ -115,7 +127,8 @@ public class view_pie_charts extends AppCompatActivity {
     }
 
     public void storeInfo() {
-
+        String holdName1, holdName2, holdName3;
+        double holdTotal1, holdTotal2, holdTotal3;
         try {
             nameShop1 = shopNames.get(0);
             totalShop1 = totals.get(0);
@@ -126,46 +139,116 @@ public class view_pie_charts extends AppCompatActivity {
             nameShop4 = shopNames.get(3);
             totalShop4 = totals.get(3);
 
+            //four values 100, 30, 60, 70
             for (int i = 0; i < shopNames.size(); i++) {
-                if (totals.get(i) > totalShop1) {
-                    totalShop1 = totals.get(i);
-                    nameShop1 = shopNames.get(i);
-                } else if (totals.get(i) > totalShop2) {
-                    totalShop2 = totals.get(i);
-                    nameShop2 = shopNames.get(i);
+                if (totals.get(i) > totalShop1) { // 30 > 100
+                    Log.d(" if checking", "" + totals.get(i) + " against " + totalShop1);
+                    holdName1 = nameShop1; // hold name for 50
+                    holdTotal1 = totalShop1;  // hold 50
+                    totalShop1 = totals.get(i); // set 100
+                    nameShop1 = shopNames.get(i); // set name for 100
+//                    totalShop2 = holdTotal1;
+//                    nameShop2 = holdName1;
+                    if (holdTotal1 > totalShop2) {  // 40 > 30
+                        Log.d("checking", "" + totals.get(i) + " against " + totalShop2);
+                        holdName2 = nameShop2; // hold name for 30
+                        holdTotal2 = totalShop2; // hold 30
+                        totalShop2 = holdTotal1; // set 40
+                        nameShop2 = holdName1; // set name for 40
+//                        totalShop3 = holdTotal2;
+//                        nameShop3 = holdName2;
+                        if (holdTotal2 > totalShop3) {
+                            Log.d("checking", "" + totals.get(i) + " against " + totalShop3);
+                            holdName3 = nameShop3; // hold name for 20
+                            holdTotal3 = totalShop3; // hold 20
+                            totalShop3 = holdTotal2; // set 30
+                            nameShop3 = holdName2; // set name for 30
+//                            totalShop4 = holdTotal3;
+//                            nameShop4 = holdName3;
+                            if (holdTotal3 > totalShop4) {
+                                Log.d("checking", "" + totals.get(i) + " against " + totalShop4);
+                                totalShop4 = holdTotal3; // set 20
+                                nameShop4 = holdName3; // set name for 20
+                            }
+                        }
+                    }
+                } else if (totals.get(i) > totalShop2) { // 30 > 30
+                    Log.d(" else if 1 checking", "" + totals.get(i) + " against " + totalShop2);
+                    holdName2 = nameShop2; // hold name for 30
+                    holdTotal2 = totalShop2; // hold 30
+                    totalShop2 = totals.get(i); // set 40
+                    nameShop2 = shopNames.get(i); // set name for 40
+                    if (holdTotal2 > totalShop3) {
+                        Log.d(" else if 1 checking", "" + totals.get(i) + " against " + totalShop3);
+                        holdName3 = nameShop3; // hold name for 20
+                        holdTotal3 = totalShop3; // hold 20
+                        totalShop3 = holdTotal2; // set 30
+                        nameShop3 = holdName2; // set name for 30
+                        if (holdTotal3 > totalShop4) {
+                            Log.d(" else if 1 checking", "" + totals.get(i) + " against " + totalShop4);
+                            totalShop4 = holdTotal3; // set 20
+                            nameShop4 = holdName3; // set name for 20
+                        }
+                    }
                 } else if (totals.get(i) > totalShop3) {
-                    totalShop3 = totals.get(i);
-                    nameShop3 = shopNames.get(i);
+                    Log.d(" else if 2 checking", "" + totals.get(i) + " against " + totalShop3);
+                    holdName3 = nameShop3; // hold name for 20
+                    holdTotal3 = totalShop3; // hold 20
+                    totalShop3 = totals.get(i); // set 30
+                    nameShop3 = shopNames.get(i); // set name for 30
+                    if (holdTotal3 > totalShop4) {
+                        Log.d(" else if 2 checking", "" + totals.get(i) + " against " + totalShop4);
+                        totalShop4 = holdTotal3; // set 20
+                        nameShop4 = holdName3; // set name for 20
+                    }
+
                 } else if (totals.get(i) > totalShop4) {
-                    totalShop4 = totals.get(i);
-                    nameShop4 = shopNames.get(i);
+                    Log.d(" else if 3 checking", "" + totals.get(i) + " against " + totalShop4);
+                    totalShop4 = totals.get(i); // set 20
+                    nameShop4 = shopNames.get(i); // set name for 20
                 }
 
+                calculateSliceOfPie(totalShop1, totalShop2, totalShop3, totalShop4);
+                shop1 = findViewById(R.id.shop1_info);
+                shop2 = findViewById(R.id.shop2_info);
+                shop3 = findViewById(R.id.shop3_info);
+                shop4 = findViewById(R.id.shop4_info);
+
+                shop1.setText(nameShop1 + ": €" + String.format(" %.2f", totalShop1));
+                shop2.setText(nameShop2 + ": €" + String.format(" %.2f", totalShop2));
+                shop3.setText(nameShop3 + ": €" + String.format(" %.2f", totalShop3));
+                shop4.setText(nameShop4 + ": €" + String.format(" %.2f", totalShop4));
+                controlCompare++;
             }
-
-            calculateSliceOfPie(totalShop1, totalShop2, totalShop3, totalShop4);
-            shop1 = findViewById(R.id.shop1_info);
-            shop2 = findViewById(R.id.shop2_info);
-            shop3 = findViewById(R.id.shop3_info);
-            shop4 = findViewById(R.id.shop4_info);
-
-            shop1.setText(nameShop1 + ": €" + totalShop1);
-            shop2.setText(nameShop2 + ": €" + totalShop2);
-            shop3.setText(nameShop3 + ": €" + totalShop3);
-            shop4.setText(nameShop4 + ": €" + totalShop4);
-
+//            runInBG(extendRun);
         } catch (Exception e) {
             Toast.makeText(this, "Please add more receipts", Toast.LENGTH_SHORT).show();
             startActivity(mainIntent);
         }
         totals.clear();
         shopNames.clear();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         getContents();
+    }
+
+    public void runInBG(final int extendRun) {
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if (controlCompare == control) {
+                    loading.setVisibility(View.GONE);
+                } else {
+                    runInBG(extendRun);
+                }
+
+            }
+        }, 500);
     }
 
     @Override
@@ -176,6 +259,8 @@ public class view_pie_charts extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mainIntent = new Intent(this, Main.class);
+//        loading = findViewById(R.id.loading_login);
+//        loading.setVisibility(View.GONE);
 
         Toolbar toolbar = findViewById(R.id.viewReceiptsToolbar);
         setSupportActionBar(toolbar);
@@ -184,7 +269,7 @@ public class view_pie_charts extends AppCompatActivity {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
             actionbar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         // initialize our XYPlot reference:

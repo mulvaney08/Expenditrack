@@ -56,6 +56,8 @@ public class SplashScreen extends AppCompatActivity {
 
         }
 
+        Utils.setUserReference();
+        Utils.writeUser(new User("Aaron","123","What is your favourite operating system?","Linux"));
         Utils.loadUserInfo();
 
         loading = findViewById(R.id.loading_reg);
