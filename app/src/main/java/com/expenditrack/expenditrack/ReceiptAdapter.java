@@ -39,7 +39,7 @@ public class ReceiptAdapter extends ArrayAdapter<Receipt> {
         try {
             tvSupplierName.setText(receipt.supplierName);
             tvTimestamp.setText(receipt.timeStamp);
-            tvTotalSpent.setText(receipt.totalSpent);
+            tvTotalSpent.setText("€"+receipt.totalSpent);
             tvUsername.setText(receipt.username);
             category.setText(receipt.category);
         }catch (Exception e){
